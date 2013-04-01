@@ -1,3 +1,16 @@
+####################
+## nLaunch specific
+####################
+src/*.o
+src/*.elf
+src/*.exe
+src/*.tns
+src/*.tno
+src/*.tnc
+src/*.tco
+src/*.tcc
+
+
 #################
 ## Eclipse
 #################
