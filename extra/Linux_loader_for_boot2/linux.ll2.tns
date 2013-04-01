@@ -1,0 +1,5 @@
+kernel /documents/linux/zImage.tns
+initrd /documents/linux/initrd.tns
+cmdline root=/dev/ram
+boot
+
