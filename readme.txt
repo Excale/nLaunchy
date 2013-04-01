@@ -12,10 +12,9 @@ http://github.com/tangrs/linux for more information )
 
 As usual, use at your own risk :-P
 
-NOTE: I have forked nLaunch CX so that everyone can send me any usefull
-modification (excale @ live.fr). I'll add it to nLaunchy so we can keep one
-version with all the latest updates/added things without having to change the
-name every time :).
+NOTE: I have forked nLaunch CX so that everyone can contribute. I'll add it
+to nLaunchy so we can keep one version with all the latest updates/added things
+without having to change the name every time :).
 
 
 Initial installation
@@ -116,6 +115,7 @@ Update of the target OS version
 5) reboot
    - /!\ first boot can be fairly long (max 3 min); the progression bar can be
      quite unstable.
+6) the old OS can now be found in nlaunch/phoenix.old.tns
 
 
 Update of nLaunchy
