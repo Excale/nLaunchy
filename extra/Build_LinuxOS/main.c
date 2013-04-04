@@ -38,7 +38,7 @@ uint64_t serial_num;
 
 #ifdef DEBUG
 void nputs(const char *ptr) {
-	io_port serial = (io_port)0x90020000;
+	io32_port serial = (io32_port)0x90020000;
 	unsigned char c;
 
 	while ( (c = *ptr++) ) {
@@ -133,12 +133,13 @@ void detect_mach(void) {
 	io16_port keypad= (io16_port)0x900000d8;
 	unsigned int model = *misc;
 
-	if (model != 0x00000101 && model != 0x01000010) {
+	model &= 0x0fff;
+	if (model != 0x101 && model != 0x010) {
 		nputs("Could not detect calculator model. Panicking.\n");
 		panic();
 	}
 
-	if (model == 0x00000101) {
+	if (model == 0x101) {
 		is_cx = 1;
 		ram_size = 0x04000000;
 		mach_type = 4443;
@@ -168,10 +169,12 @@ classic:
 	return;
 }
 
+
 int main(void) {
 	detect_mach();
 	detect_serialnr();
 	build_atags();
 
+	nputs("Booting kernel.\n");
 	kernel_begin(0, mach_type, &atag_list);
 }
