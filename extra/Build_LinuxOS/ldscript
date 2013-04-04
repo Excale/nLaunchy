@@ -1,0 +1,32 @@
+SECTIONS
+{
+	. = 0x10000000;
+	.text.startup : {
+		*(.text.startup);
+	}
+	. = 0x10000100;
+	.data.atags : {
+		PROVIDE(atag_list = .);
+	}
+	. = 0x10001000;
+	.text : {
+		*(.text);
+	}
+	.data : {
+		*(.data);
+		*(.rodata);
+		*(.bss);
+		PROVIDE(initrd_size = .);
+		LONG(SIZEOF(.data.initrd));
+	}
+	. = 0x10008000;
+	.data.kernel : {
+		PROVIDE(kernel_begin = .);
+		*(.payload.kernel);
+	}
+	. = 0x10800000;
+	.data.initrd : ALIGN(4096) {
+		PROVIDE(initrd = .);
+		*(.payload.initrd);
+	}
+}
