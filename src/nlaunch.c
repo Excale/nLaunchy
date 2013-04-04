@@ -224,6 +224,16 @@ static __attribute__((always_inline)) void detect_OS_version(void) {
     EMIT_NOP;
 }
 
+//! Check for dualboot request
+static __attribute__((always_inline)) void check_dualboot(void) {
+    unsigned short kp = *(volatile unsigned short*)0x900E001C;
+    kp &= (1<<9); /* TAB key */
+    if ((!kp) ^ MODEL) {
+        boot2_rename((char *)osoldfilename, (char *)osupdatefilename);
+        DISPLAY(X);
+    }
+}
+
 #include "patch.c"
 
 //! Jump to OS, without return.
@@ -277,6 +287,7 @@ int main(void) {
         DISPLAY(1);
     make_reboot_proof();
         DISPLAY(2);
+    check_dualboot();
     update_OS();
         DISPLAY(3);
     install_resources();

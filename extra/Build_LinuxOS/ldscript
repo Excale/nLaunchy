@@ -1,0 +1,50 @@
+/*
+    Build_LinuxOS - for building a boot2 compatible Linux image
+    Copyright (C) 2013  Daniel Tang
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+SECTIONS
+{
+	. = 0x10000000;
+	.text.startup : {
+		*(.text.startup);
+	}
+	. = 0x10000100;
+	.data.atags : {
+		PROVIDE(atag_list = .);
+	}
+	. = 0x10001000;
+	.text : {
+		*(.text);
+	}
+	.data : {
+		*(.data);
+		*(.rodata);
+		*(.bss);
+		PROVIDE(initrd_size = .);
+		LONG(SIZEOF(.data.initrd));
+	}
+	. = 0x10008000;
+	.data.kernel : {
+		PROVIDE(kernel_begin = .);
+		*(.payload.kernel);
+	}
+	. = 0x10800000;
+	.data.initrd : ALIGN(4096) {
+		PROVIDE(initrd = .);
+		*(.payload.initrd);
+	}
+}

@@ -1,0 +1,17 @@
+/* Public domain. Do whatever you want with this */
+
+SECTIONS
+{
+	. = 0x10000000;
+	.text : {
+		*(.text.startup);
+		*(.text);
+	}
+	.data : {
+		*(.data);
+		*(.rodata);
+	}
+	.bss : {
+		*(.bss);
+	}
+}
