@@ -1,0 +1,37 @@
+#ifndef BOOT2_H
+#define BOOT2_H
+
+//! Build options: MODEL:[0=CLASSIC,1=CX]
+/** You should set this in Makefile
+#define MODEL  0 */
+
+//! display_msg_to_screen from boot2
+#define display_msg_to_screen   ((void(*)(M(const char *, short unsigned int *), uint32_t, uint32_t))M(0x11801C94,0x1187F9F8))
+//! fopen    from boot2
+#define fopen    ((void *(*)(const char *, const char *))M(0x11856590,0x118AB7B8))
+//! fclose   from boot2
+#define fclose   ((int (*)(void *))M(0x1185634C,0x118AB53C))
+//! fread    from boot2
+#define fread    ((unsigned int(*)(void *, unsigned int, unsigned int, FILE *))M(0x118566CC,0x118AB8A4))
+//! HW_reset from boot2
+#define hw_reset ((void(*)(void))M(0x11831008,0x118C62BC))
+//! load_os  from boot2
+#define load_os  ((int (*)(uint32_t))M(0x11802B10,0x11AB7810))
+//! malloc   from boot2
+#define malloc   ((void *(*)(unsigned int))M(0x11854E9C,0x118A9A34))
+//! mkdir    from boot2
+#define mkdir    ((int (*)(const char *))M(0x118589F8,0x11A5772C))
+//! purge_temp_files from boot2
+#define purge_files       ((void(*)(const char *, int))M(0x1192ACF4,0x11AB994C))
+//! rename   from boot2
+#define rename   ((int (*)(const char *, const char *))M(0x11859D08,0x11A58A60))
+//! stat     from boot2
+#define stat     ((int(*)(const char *, void *))M(0x11859F5C,0x11A58CAC))
+//! strcpy   from boot2
+#define strcpy   ((int(*)(char *, const char *))M(0x11857A44,0x118AC2A0))
+//! unlink   from boot2
+#define unlink   ((int (*)(const char *))M(0x1185A238,0x11A58F88))
+
+
+
+#endif

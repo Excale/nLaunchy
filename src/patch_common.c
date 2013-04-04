@@ -19,6 +19,17 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.
  */
 
+ //! Write new OS filename to the given address.
+static __attribute__((noinline)) void write_osfilename(uint32_t address) {
+    unsigned int i;
+    char * src  = (char *)osfilename;
+    char * dest = (char *)address;
+    for (i = 0; i < sizeof(osfilename); i++) {
+        *dest++ = *src++;
+    }
+    EMIT_NOP;
+}
+
 #if MODEL==0
 static __attribute__((always_inline)) void patch_CAS_1_1_9170_common(void) {
     write_osfilename(0x1043C1DC); // Change OS filename to load resources correctly

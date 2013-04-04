@@ -27,10 +27,10 @@ nlaunch_classic.o: $(FILES)
 	$(GCC) $(GCCFLAGS) -o nlaunch_classic.o -c "-DMODEL=0" $<
 	
 preloader_cx.o: preloader_cx.c
-	$(GCC) $(GCCFLAGS) -o preloader_cx.o    -c             $<
+	$(GCC) $(GCCFLAGS) -o preloader_cx.o    -c "-DMODEL=1" $<
 
 firstloader_cx.o: firstloader_cx.c
-	$(GCC) $(GCCFLAGS) -o firstloader_cx.o  -c             $<
+	$(GCC) $(GCCFLAGS) -o firstloader_cx.o  -c "-DMODEL=1" $<
 
 nlaunch_cx.o:      $(FILES)
 	$(GCC) $(GCCFLAGS) -o nlaunch_cx.o      -c "-DMODEL=1" $<
