@@ -1,5 +1,5 @@
 /*
- * buildimg - helper for nLaunch CX
+ * buildimg - helper for nLaunchy
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy

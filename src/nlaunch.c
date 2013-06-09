@@ -1,5 +1,5 @@
 /*
- * nLaunchy v2.1
+ * nLaunchy v2.2b
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy
@@ -64,7 +64,6 @@ static __attribute((always_inline)) void make_reboot_proof(void) {
         rename((char *)TEMPPATH, (char *)NLAUNCHPATH);
         do_install_resources = 1;
     }
-    EMIT_NOP;
 }
 
 //! Update the OS if needed.
@@ -72,11 +71,16 @@ static __attribute((always_inline)) void update_OS(void) {
     FILE * osfile;
     if ((osfile = fopen((char *)osupdatefilename, "r"))) {
         fclose(osfile);
-        rename((char *)osfilename, (char *)osoldfilename);
-        rename((char *)osupdatefilename, (char *)osfilename);
-        do_install_resources = 1;
+        if( rename((char *)osfilename, (char *)osoldfilename) ) {
+            rename((char *)osupdatefilename, (char *)osfilename);
+            do_install_resources = 1;
+        } else
+        {
+            #if DEBUG
+            DISPLAY(K);
+            #endif
+        }
     }
-    EMIT_NOP;
 }
 
 //! Install the OS's resources.
@@ -108,7 +112,6 @@ static __attribute__((always_inline)) void install_resources(void) {
         hw_reset();
         __builtin_unreachable();
     }
-    EMIT_NOP;
 }
 
 //! Load the OS.
@@ -142,24 +145,23 @@ static __attribute__((always_inline)) void load_OS(void) {
     put_word(0x11AB7420, 0xEA000092);
     put_word(0x11AB76BC, NOP);
     #endif
-    if ( !load_os(1) ) {
+    if ( load_os(1) ) {
         #if DEBUG
         DISPLAY(F);
         #endif
+        while(1) {}
+        __builtin_unreachable();
     }
-    EMIT_NOP;
 }
 //! Detect the OS version.
 static __attribute__((always_inline)) void detect_OS_version(void) {
     os_version = get_word(0x10000020);
-    EMIT_NOP;
 }
 
 #include "patch.c"
 
 //! Jump to OS, without return.
 static __attribute__((always_inline, noreturn)) void launch_OS(void) {
-    EMIT_NOP;
     asm volatile(
         "LDR    PC, =0x10000000    \n\t"
     );
@@ -167,32 +169,6 @@ static __attribute__((always_inline, noreturn)) void launch_OS(void) {
 }
 
 int main(void) {
-
-    #if MODEL==0
-        put_word(M(0x11801204,0x1187E1C0), NOP);
-        asm volatile(
-            "ADD    R1, PC, #0x48                        \n\t"
-            "LDR    R0, =0x11F10000                      \n\t"
-            "LDR    R2, =0x1000                          \n\t"
-            "MOV    LR, PC                               \n\t"
-            "LDR    PC, =" M("0x11856CCC","0x118AC558") "\n\t"
-            "LDR    R1, =0xE51FF004                      \n\t"
-            "LDR    R0, =" M("0x11801244","0x1187E208") "\n\t"
-            "STR    R1, [R0]                             \n\t"
-            "LDR    R1, =0x11F10000                      \n\t"
-            "LDR    R0, =" M("0x11801248","0x1187E20C") "\n\t"
-            "STR    R1, [R0]                             \n\t"
-            "LDR    R1, =0x1ACCE551                      \n\t"
-            "LDR    R0, =0x90060C00                      \n\t"
-            "STR    R1, [R0]                             \n\t"
-            "LDR    R0, =0x90060008                      \n\t"
-            "MOV    R1, #0                               \n\t"
-            "STR    R1, [R0]                             \n\t"
-            "LDR    R0, =0x90060C00                      \n\t"
-            "STR    R1, [R0]                             \n\t"
-            "LDR    PC, =0x11800000                      \n\t"
-        );
-    #endif
 
     {
         int dummy;
@@ -203,7 +179,24 @@ int main(void) {
         " mov %0, #0 \n"
         " mcr p15, 0, %0, c7, c7, 0 @ invalidate ICache and DCache\n"
         : "=r" (dummy));
+        *(volatile unsigned*)0x90060C00 = 0x1ACCE551;
+        *(volatile unsigned*)0x90060008 = 0;
+        *(volatile unsigned*)0x90060C00 = 0;
     }
+    
+    #if MODEL==0
+        asm volatile(
+            "ADD    R1, PC, #0x10   \n\t"
+            "LDR    R0, =0x11F10000 \n\t"
+            "LDR    R2, =0x2000     \n\t"
+            "MOV    LR, PC          \n\t"
+            "LDR    PC, =0x11856CCC \n\t"
+            "LDR    PC, =0x11F10000 \n\t"
+        );
+        put_byte(0x1181FD6B, 0xEA);
+        put_word(0x1180091C, NOP);
+        fclose((void *)0x11A6D4A8);
+    #endif
 
         DISPLAY(1);
     make_reboot_proof();

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# nLaunch CX v2.0
+# nLaunchy
 #
 # Copyright (C) 2012-2013 nLaunch team
 # Copyright (C) 2013 nLaunch CX guy

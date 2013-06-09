@@ -1,5 +1,5 @@
 =======================
-|    nLaunchy v2.1    |
+|    nLaunchy v2.2b   |
 =======================
 PLEASE READ THE WHOLE README BEFORE DOING ANYTHING.
 
@@ -50,8 +50,7 @@ Needless to say, all steps are important ;-)
      the boot as a failure
    - NOTE: unplugging the USB cable "at the right time", i.e. after sending
      the TNO/TNC and shortly after the bar has reached 60% again, may increase
-     the reliability of the installation procedure. Likewise, the second
-     generation of Ndless (1.7/2.0) worked better when USB was unplugged.
+     the reliability of the installation procedure.
 10)enjoy :-)
    NOTE: if it is working fine and you want nLaunchy to be more stealthy when
    booting, you can compile a quiet version ("DEBUG 1" in nlaunch.c).
@@ -141,6 +140,7 @@ Signification of a few debug strings:
 * 'U': the OS was not recognized and thus not patched
 * 'F': if this is an OS made by TI, this means it was not loaded correctly in
    memory.
+* 'K': couldn't update the OS. You probably forgot to move phoenix.old.tns
 CX: if the reset button doesn't work, use a screwdriver to open the battery
 door and remove the battery before plugging it back in.
 
@@ -148,13 +148,8 @@ door and remove the battery before plugging it back in.
 Using Ndless with nLaunch
 =========================
 * Ndless 1.7/2.0 should work out of the box.
-* if you want to use Ndless 3.1 with nLaunch, just send the custom
-  ndless_resources.tns provided in this distribution to the /ndless folder,
-  then reboot. The Ndless 3.1 loader is embedded in nLaunch.
-  If you want to uninstall a Ndless 3.1 handled by nLaunch, just remove
-  ndless_resources.tns and reboot. Warning, this is _very_ different from
-  vanilla Ndless: vanila Ndless is removed through launching
-  ndless_resources.tns, but one mustn't remove ndless_resources.tns !
+* if you want to use Ndless 3.1 with nLaunch, use the regular ndless 3.1, but
+  make sure the revision is r800 or more.
 
 
 License

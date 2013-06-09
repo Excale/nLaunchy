@@ -58,8 +58,10 @@ $(BUILDIMG): buildimg.c
 	$(HOST_GCC) -Os -s -o $@ $<
 
 $(TNC): $(TNSC) $(TNSF) $(TNSL) $(BUILDTNCO)
-	./$(BUILDTNCO) -classic nlaunch_classic.tns nlaunch.tno nlaunch.tnc
-	./$(BUILDTNCO) -cpx     firstloader_cx.tns  nlaunch.tco nlaunch.tcc
+	./$(BUILDTNCO) -classic nlaunch_classic.tns nlaunch.tno
+	./$(BUILDTNCO) -classic nlaunch_classic.tns nlaunch.tnc
+	./$(BUILDTNCO) -cpx     firstloader_cx.tns  nlaunch.tco
+	./$(BUILDTNCO) -cpx     firstloader_cx.tns  nlaunch.tcc
 	./$(BUILDTNCO) -cx      preloader_cx.tns    preloader.tns
 
 clean:

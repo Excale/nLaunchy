@@ -1,5 +1,5 @@
 /*
- * nLaunchy v2.1
+ * nLaunchy
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy

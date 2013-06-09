@@ -1,9 +1,36 @@
-#ifndef BOOT2_H
-#define BOOT2_H
+/*
+ * nLaunchy
+ *
+ * Copyright (C) 2012-2013 nLaunch team
+ * Copyright (C) 2013 nLaunch CX guy
+ * Copyright (C) 2013 Excale
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2, as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.
+ */
+ 
+#ifndef  __BOOT2_H__
+#define  __BOOT2_H__
 
 //! Build options: MODEL:[0=CLASSIC,1=CX]
 /** You should set this in Makefile
 #define MODEL  0 */
+
+#if MODEL==0
+  #define M(x,y) x
+#elif MODEL==1
+  #define M(x,y) y
+#endif
 
 //! display_msg_to_screen from boot2
 #define display_msg_to_screen   ((void(*)(M(const char *, short unsigned int *), uint32_t, uint32_t))M(0x11801C94,0x1187F9F8))
@@ -31,7 +58,5 @@
 #define strcpy   ((int(*)(char *, const char *))M(0x11857A44,0x118AC2A0))
 //! unlink   from boot2
 #define unlink   ((int (*)(const char *))M(0x1185A238,0x11A58F88))
-
-
 
 #endif

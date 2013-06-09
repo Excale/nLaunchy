@@ -1,5 +1,5 @@
 /*
- * nLaunchy v2.1
+ * nLaunchy
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy
@@ -32,7 +32,7 @@ void main(void) {
     struct _stat path_stat;
     const char *path = "/phoenix/install/nlaunch.tns";
     #if DEBUG
-    display_msg_to_screen(u"A",0,0);
+    display_msg_to_screen(u"P",0,0);
     #endif
     *(volatile unsigned*)0x90060C00 = 0x1ACCE551;
     *(volatile unsigned*)0x90060008 = 0;
@@ -51,10 +51,6 @@ void main(void) {
     rename((char *)0x118D940C, (char *)0x118D9DA4);
     rename("/documents/nlaunch/nlaunch.tns", path);
 
-    #if DEBUG
-    display_msg_to_screen(u"B",0,0);
-    #endif
-
     FILE * res_file;
     res_file=fopen(path, "rb");
     stat(path, &path_stat);
@@ -62,7 +58,7 @@ void main(void) {
     fread(core, path_stat.st_size, 1, res_file);
     fclose(res_file);
     #if DEBUG
-    display_msg_to_screen(u"C",0,0);
+    display_msg_to_screen(u"P",0,0);
     #endif
     ((void (*)(void))(char*)core)();
     __builtin_unreachable();

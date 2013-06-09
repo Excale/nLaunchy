@@ -1,5 +1,5 @@
 /*
- * nLaunchy v2.1
+ * nLaunchy
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy
@@ -27,7 +27,6 @@ static __attribute__((noinline)) void write_osfilename(uint32_t address) {
     for (i = 0; i < sizeof(osfilename); i++) {
         *dest++ = *src++;
     }
-    EMIT_NOP;
 }
 
 #if MODEL==0

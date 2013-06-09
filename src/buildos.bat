@@ -1,4 +1,4 @@
-rem nLaunch CX v2.0
+rem nLaunchy
 rem
 rem Copyright (C) 2012-2013 nLaunch team
 rem Copyright (C) 2013-2013 nLaunch CX guy
