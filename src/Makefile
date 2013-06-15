@@ -1,7 +1,7 @@
 HOST_GCC = gcc
 GCC = nspire-gcc
 LD  = nspire-ld
-GCCFLAGS = -Os -nostdlib -Wall -W -Wno-attributes -marm -mcpu=arm926ej-s -s -fPIE -ffreestanding -std=gnu11
+GCCFLAGS = -Os -g3 -nostdlib -Wall -W -Wno-attributes -marm -mcpu=arm926ej-s -s -fPIE -ffreestanding -std=gnu1x
 LDFLAGS  = -nostdlib -ffreestanding --no-startup --no-ldscript -T ldscript 
 OBJCOPY := "$(shell which arm-elf-objcopy 2>/dev/null)"
 ifeq (${OBJCOPY},"")
@@ -25,14 +25,14 @@ all: $(TNSC) $(TNSX) $(TNSL) $(BUILDTNCO) $(BUILDIMG) $(TNC)
 
 nlaunch_classic.o: $(FILES)
 	$(GCC) $(GCCFLAGS) -o nlaunch_classic.o -c "-DMODEL=0" $<
-	
+
 preloader_cx.o: preloader_cx.c
 	$(GCC) $(GCCFLAGS) -o preloader_cx.o    -c "-DMODEL=1" $<
 
 firstloader_cx.o: firstloader_cx.c
 	$(GCC) $(GCCFLAGS) -o firstloader_cx.o  -c "-DMODEL=1" $<
 
-nlaunch_cx.o:      $(FILES)
+nlaunch_cx.o: $(FILES)
 	$(GCC) $(GCCFLAGS) -o nlaunch_cx.o      -c "-DMODEL=1" $<
 
 $(TNSC): nlaunch_classic.o
