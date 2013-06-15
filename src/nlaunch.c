@@ -131,6 +131,8 @@ static __attribute__((always_inline)) void load_OS(void) {
     put_word(0x11802930, NOP);
     put_word(0x11802970, NOP);
     put_word(0x11802AC4, NOP);
+    put_word(0x900B0000, 0x1002);
+    put_word(0x900B000C, 0x4);
     #elif MODEL==1
     put_word(0x1187D33C, 0xE12FFF1E);
     put_word(0x11AB6E4C, 0xE59F3000);
@@ -144,6 +146,8 @@ static __attribute__((always_inline)) void load_OS(void) {
     put_byte(0x11AB71AB, 0xEA);
     put_word(0x11AB7420, 0xEA000092);
     put_word(0x11AB76BC, NOP);
+    put_word(0x900B0000, 0x30A002);
+    put_word(0x900B000C, 0x4);
     #endif
     if ( load_os(1) ) {
         #if DEBUG
