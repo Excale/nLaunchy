@@ -64,8 +64,7 @@ static const unsigned char part3[][4] = {{0xB0, 0x02, 0x82, 0x11},
 
 int main(int argc, char * argv[]) {
     FILE * input;
-    FILE * output1;
-    FILE * output2;
+    FILE * output;
     int  mode;
     long filesize;
     long padding;
@@ -99,8 +98,8 @@ int main(int argc, char * argv[]) {
         exit(1);
     }
 
-    output1 = fopen(argv[3], "w+b");
-    if (!output1) {
+    output = fopen(argv[3], "w+b");
+    if (!output) {
         fclose(input);
         perror(argv[3]);
         exit(1);
@@ -108,13 +107,13 @@ int main(int argc, char * argv[]) {
 
 
     // Header
-    fwrite(part1, sizeof(part1[0]), sizeof(part1)/sizeof(part1[0]), output1);
+    fwrite(part1, sizeof(part1[0]), sizeof(part1)/sizeof(part1[0]), output);
 
     // Smasher + padding
-    fwrite(part2, sizeof(part2[0]), sizeof(part2)/sizeof(part2[0]), output1);
-    fwrite(part3[mode], sizeof(part3[0][0]), sizeof(part3[0])/sizeof(part3[0][0]), output1);
+    fwrite(part2, sizeof(part2[0]), sizeof(part2)/sizeof(part2[0]), output);
+    fwrite(part3[mode], sizeof(part3[0][0]), sizeof(part3[0])/sizeof(part3[0][0]), output);
     for (i = 0; i < padding; i++) {
-        fputc(0x00, output1);
+        fputc(0x00, output);
     }
 
     // Retrieve the size of the payload.
@@ -125,26 +124,26 @@ int main(int argc, char * argv[]) {
     // Payload
     for (i = 0; i < filesize; i++) {
         int c = fgetc(input);
-        fputc(c, output1);
+        fputc(c, output);
     }
 
     // More padding, if necessary.
     if ( mode == 2 ) {
         for (i = 0; i < 0x1000; i++) {
-            fputc(0x00, output1);
+            fputc(0x00, output);
         }
     }
 
     // Update leading metadata
-    filesize = ftell(output1);
-    fseek(output1, 0x17, SEEK_SET);
-    fprintf(output1, "%8ld", filesize);
+    filesize = ftell(output);
+    fseek(output, 0x17, SEEK_SET);
+    fprintf(output, "%8ld", filesize);
     
-    fseek(output1, 0x5A, SEEK_SET);
-    fputc((filesize - 0x5E) & 0xFF, output1);
-    fputc((filesize - 0x5E) >> 8  , output1);
+    fseek(output, 0x5A, SEEK_SET);
+    fputc((filesize - 0x5E) & 0xFF, output);
+    fputc((filesize - 0x5E) >> 8  , output);
 
     fclose(input);
-    fclose(output1);
+    fclose(output);
     return 0;
 }

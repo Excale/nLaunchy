@@ -76,9 +76,7 @@ static __attribute((always_inline)) void update_OS(void) {
             do_install_resources = 1;
         } else
         {
-            #if DEBUG
             DISPLAY(K);
-            #endif
         }
     }
 }
@@ -150,9 +148,7 @@ static __attribute__((always_inline)) void load_OS(void) {
     put_word(0x900B000C, 0x4);
     #endif
     if ( load_os(1) ) {
-        #if DEBUG
         DISPLAY(F);
-        #endif
         while(1) {}
         __builtin_unreachable();
     }
