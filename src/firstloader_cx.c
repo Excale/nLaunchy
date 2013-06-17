@@ -22,13 +22,10 @@
 #include "nlaunch.h"
 
 void main(void) {
-    const char *preloader_path = "/documents/nlaunch/preloader.tns";
+    static const char nlaunchupdatefilename[] = "/documents/nlaunch/nlaunch.tns";
     DISPLAY(Y);
-    *(volatile unsigned*)0x90060C00 = 0x1ACCE551;
-    *(volatile unsigned*)0x90060008 = 0;
-    *(volatile unsigned*)0x90060C00 = 0;
     mkdir("/phoenix/install/");
-    rename(preloader_path, (char *)0x118D9DA4);
+    rename(nlaunchupdatefilename, NLAUNCHPATH);
     DISPLAY(Z);
     hw_reset();
     __builtin_unreachable();

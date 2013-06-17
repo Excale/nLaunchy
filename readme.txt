@@ -12,11 +12,6 @@ http://github.com/tangrs/linux for more information )
 
 As usual, use at your own risk :-P
 
-NOTE: I have forked nLaunch CX so that everyone can contribute. I'll add it
-to nLaunchy so we can keep one version with all the latest updates/added things
-without having to change the name every time :).
-
-
 Initial installation
 ====================
 Needless to say, all steps are important ;-)
@@ -36,11 +31,11 @@ Needless to say, all steps are important ;-)
 3) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
    (you can remove the examples too)
 4) rename the TNOC'ed OS to phoenix.tns
-5) get to the CLASSIC folder
-6) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
+5) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
-7) if you have installed it on OS 3.1.0.392, uninstall Ndless by launching
-   ndless_resources.tns
+6) get to the CLASSIC folder
+7) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
+   the root of the user-accessible part of the file-system
 8) reboot, go to the maintenance menu ( http://ti-pla.net/t5360 ), delete OS
    (option 2)
 9) reboot, transfer nlaunch.tno/tnc to your calculator (an error will certainly
@@ -60,9 +55,9 @@ Needless to say, all steps are important ;-)
 ----------------------------------------------------------------
 0) backup your documents from your nspire on your computer
 1) install the 3.1.0.16 boot2, usually known as "3.1".
-   If you have installed OS 3.1.0.392, 3.2.0.1212, 3.2.0.1219 or 3.2.3.1233 you
-   already have it. If you have installed any newer version, you probably will
-   not be able to easily install the 3.1.0.16 boot2.
+   If you currently have OS 3.1.0.392, 3.2.0.1212, 3.2.0.1219 or 3.2.3.1233 you
+   already have it. If you have installed any newer version without TNOC-ing it,
+   you probably will not be able to easily install the 3.1.0.16 boot2.
    Otherwise, install OS 3.1.0.392:
    CX CAS: http://ti-pla.net/a3718
    CX    : http://ti-pla.net/a3717
@@ -77,13 +72,11 @@ Needless to say, all steps are important ;-)
 5) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
 6) get to the CX folder
-7) transfer nlaunch.tns and preloader.tns to your calculator in the folder
-   /nlaunch/, being at the root of the user-accessible part of the file-system
-8) if you have installed it on OS 3.1.0.392, uninstall Ndless by launching
-   ndless_resources.tns
-9) reboot (the reset button is the easiest way), go to the maintenance menu
+7) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
+   the root of the user-accessible part of the file-system
+8) reboot (the reset button is the easiest way), go to the maintenance menu
    ( http://ti-pla.net/t5360 ), delete OS (option 2)
-10)reboot, transfer nlaunch.tco/tcc to your calculator (an error will certainly
+9)reboot, transfer nlaunch.tco/tcc to your calculator (an error will certainly
    be shown on the computer, check if it is ok on your calculator)
    - /!\ the initial exploit can fail. If the progress bar is stuck at 60% and
      nothing is shown (you should briefly see "YZ") at the top left of the
@@ -92,10 +85,10 @@ Needless to say, all steps are important ;-)
      progression bar can be quite unstable. If the bar did not move at all
      during 3 minutes, consider the boot as a failure
    - NOTE: unplugging the USB cable "at the right time", i.e. after sending
-     the TNO/TNC and shortly after the bar has reached 60% again, may increase
+     the TCO/TCC and shortly after the bar has reached 60% again, may increase
      the reliability of the installation procedure. Likewise, the second
      generation of Ndless (1.7/2.0) worked better when USB was unplugged.
-11)enjoy :-)
+10)enjoy :-)
    - /!\ when rebooting, the progress bar can sometimes be stuck a 60% with
      nothing shown at the top left of the screen. Simply press "reset" until it
      works.
@@ -133,16 +126,28 @@ Uninstallation
 3) reboot, go to the maintenance menu ( http://ti-pla.net/t5360 ), delete OS
 4) reboot, transfer the OS to your calculator
 
+Additional features
+===================
+* Pressing ESC will trigger the "Download mode", allowing you to transfer
+  documents to your Nspire via USB. Reset you Nspire to quit
+* Pressing TAB will try to load Linux by loading
+  /documents/linux/linuxloader.tns
+
 
 Troubleshooting
 ===============
-Signification of a few debug strings:
-* 'U': the OS was not recognized and thus not patched
-* 'F': if this is an OS made by TI, this means it was not loaded correctly in
-   memory.
-* 'K': couldn't update the OS. You probably forgot to move phoenix.old.tns
+If you see any letter on the screen (except PP), see the Debug strings section
+
 CX: if the reset button doesn't work, use a screwdriver to open the battery
 door and remove the battery before plugging it back in.
+
+Debug strings
+=============
+Signification of a few debug strings:
+* 'D': you are in download mode
+* 'F': loading of the OS failed
+* 'K': couldn't update the OS. You probably forgot to move out phoenix.old.tns
+* 'U': the OS was not recognized and thus not patched
 
 
 Using Ndless with nLaunch
@@ -154,10 +159,11 @@ Using Ndless with nLaunch
 
 License
 =======
-
 Copyright (C) 2012-2013 nLaunch team
 Copyright (C) 2013 nLaunch CX guy
 Copyright (C) 2013 Excale
+Copyright (C) 2013 Lionel Debroux
+
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 2, as
@@ -175,18 +181,15 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.
 
 Contact
 =======
-Same as nLaunch 1.0: if you have problems or want to submit an idea / a patch,
-leave a message on one of the well-known websites of the TI-community.
+See https://github.com/Excale/nLaunchy
 
 
 Changelog
 =========
-
 2013-04-01: v2.1: Forked nLaunch CX to nLaunchy and added the "switcher" feature
 2013-04-01: v2.0: CX support, by "nLaunch CX guy"
 2013-01-01: v1.0: First public version, by "nLaunch team"
 
 Greetings
 =========
-
 Everyone who tries to push the envelope and get the most out of their platforms.

@@ -4,6 +4,7 @@
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy
  * Copyright (C) 2013 Excale
+ * Copyright (C) 2013 Lionel Debroux
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2, as
@@ -48,36 +49,58 @@ static __attribute__((always_inline)) void put_byte(uint32_t absaddr, uint8_t sh
     *((uint8_t  *)absaddr) = short_in;
 }
 
+static __attribute__((always_inline)) void launch_download_mode(void) {
+    DISPLAY(D);
+    #if MODEL==1
+    cx_load_function(3);
+    #endif
+    asm volatile(
+        "LDR    R4, =" M("0x11952E40","0x118D932C") "\n\t"
+    );
+    download_mode();
+    hw_reset();
+    __builtin_unreachable();
+}
+
 //! Make the launcher reboot-proof.
 static __attribute((always_inline)) void make_reboot_proof(void) {
     FILE * nlaunchfile;
-    if ((nlaunchfile = fopen((char *)NLAUNCHPATH, "r"))) {
+    if ((nlaunchfile = fopen(NLAUNCHPATH, "r"))) {
         fclose(nlaunchfile);
         if ((nlaunchfile = fopen((char *)nlaunchupdatefilename, "r"))) {
             fclose(nlaunchfile);
-            unlink((char *)NLAUNCHPATH);
-            rename((char *)nlaunchupdatefilename, (char *)NLAUNCHPATH);
+            unlink(NLAUNCHPATH);
+            rename((char *)nlaunchupdatefilename, NLAUNCHPATH);
             hw_reset();
             __builtin_unreachable();
         }
     } else {
-        rename((char *)TEMPPATH, (char *)NLAUNCHPATH);
+        rename(TEMPPATH, NLAUNCHPATH);
         do_install_resources = 1;
     }
 }
 
 //! Update the OS if needed.
 static __attribute((always_inline)) void update_OS(void) {
+    unsigned short keypad = *(volatile unsigned short*)0x900E001C;
+    keypad &= (1<<7);
+    if ((!keypad) ^ MODEL) {
+        launch_download_mode();
+        __builtin_unreachable();
+    }
+
     FILE * osfile;
     if ((osfile = fopen((char *)osupdatefilename, "r"))) {
         fclose(osfile);
-        if( rename((char *)osfilename, (char *)osoldfilename) ) {
-            rename((char *)osupdatefilename, (char *)osfilename);
-            do_install_resources = 1;
-        } else
-        {
-            DISPLAY(K);
+        if ((osfile = fopen((char *)osfilename, "r"))) {
+        fclose(osfile);
+            if( rename((char *)osfilename, (char *)osoldfilename) ) {
+                DISPLAY(K);
+                return;
+            }
         }
+        rename((char *)osupdatefilename, (char *)osfilename);
+        do_install_resources = 1;
     }
 }
 
@@ -87,7 +110,7 @@ static __attribute__((always_inline)) void install_resources(void) {
         FILE * osfile;
         FILE * nlaunchfile;
         M(,FILE * nlaunchfile2;)
-        if ( (osfile = fopen((char *)osfilename, "r")) && (nlaunchfile = fopen((char *)OSPATH, "r")) M(,&& (nlaunchfile2 = fopen((char *)NLAUNCHPATH, "r"))) ) {
+        if ( (osfile = fopen((char *)osfilename, "r")) && (nlaunchfile = fopen(NLAUNCHPATH, "r")) M(,&& (nlaunchfile2 = fopen(NLAUNCHPATH, "r"))) ) {
             purge_files("/phoenix", 0);
             purge_files("/ti84"   , 0);
             fclose(osfile);
@@ -95,9 +118,9 @@ static __attribute__((always_inline)) void install_resources(void) {
             M(,fclose(nlaunchfile2);)
         }
 
-        strcpy( (char *)OSPATH, osfilename);
+        strcpy( NLAUNCHPATH, osfilename);
 
-        rename((char *)OSPATH, (char *)TEMPPATH);
+        rename(NLAUNCHPATH, TEMPPATH);
         put_word(M(0x1192C220,0x11ABBA54), 0xE1A00009);
         asm volatile(
             "LDR    R0, =" M("0x11952E6C","0x118D940C") "\n\t"
@@ -106,7 +129,7 @@ static __attribute__((always_inline)) void install_resources(void) {
             "MOV    LR, PC                               \n\t"
             "LDR    PC, =" M("0x1192C120","0x11ABB96C") "\n\t"
         );
-        rename((char *)TEMPPATH, (char *)OSPATH);
+        rename(TEMPPATH, NLAUNCHPATH);
         hw_reset();
         __builtin_unreachable();
     }
@@ -116,8 +139,8 @@ static __attribute__((always_inline)) void install_resources(void) {
 static __attribute__((always_inline)) void load_OS(void) {
 
     unsigned short keypad = *(volatile unsigned short*)0x900E001C;
-    keypad &= (1<<9); /* TAB key */
-    strcpy( (char *)OSPATH, ((!keypad) ^ MODEL)? linuxloaderfilename : osfilename );
+    keypad &= (1<<9);
+    strcpy( NLAUNCHPATH, ((!keypad) ^ MODEL)? linuxloaderfilename : osfilename );
         
     #if MODEL==0
     put_word(0x11800970, 0xE12FFF1E);
@@ -169,34 +192,6 @@ static __attribute__((always_inline, noreturn)) void launch_OS(void) {
 }
 
 int main(void) {
-
-    {
-        int dummy;
-        // Invalidate caches
-        asm volatile(
-        "0: mrc p15, 0, r15, c7, c10, 3 @ test and clean DCache \n"
-        " bne 0b \n"
-        " mov %0, #0 \n"
-        " mcr p15, 0, %0, c7, c7, 0 @ invalidate ICache and DCache\n"
-        : "=r" (dummy));
-        *(volatile unsigned*)0x90060C00 = 0x1ACCE551;
-        *(volatile unsigned*)0x90060008 = 0;
-        *(volatile unsigned*)0x90060C00 = 0;
-    }
-    
-    #if MODEL==0
-        asm volatile(
-            "ADD    R1, PC, #0x10   \n\t"
-            "LDR    R0, =0x11F10000 \n\t"
-            "LDR    R2, =0x2000     \n\t"
-            "MOV    LR, PC          \n\t"
-            "LDR    PC, =0x11856CCC \n\t"
-            "LDR    PC, =0x11F10000 \n\t"
-        );
-        put_byte(0x1181FD6B, 0xEA);
-        put_word(0x1180091C, NOP);
-        fclose((void *)0x11A6D4A8);
-    #endif
 
         DISPLAY(1);
     make_reboot_proof();

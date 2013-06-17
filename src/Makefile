@@ -8,34 +8,44 @@ ifeq (${OBJCOPY},"")
 	OBJCOPY := arm-none-eabi-objcopy
 endif
 TNSC = nlaunch_classic.tns
-TNSX = nlaunch.tns
-TNSF = firstloader_cx.tns
+TNSP = preloader_classic.tns
+TNSX = nlaunch_cx.tns
 TNSL = preloader_cx.tns
-TNC  = nlaunch.tnc
-TNO  = nlaunch.tno
-TCC  = nlaunch.tcc
-TCO  = nlaunch.tco
+TNSF = firstloader_cx.tns
+TNC  = ../CLASSIC/nlaunch.tnc
+TNO  = ../CLASSIC/nlaunch.tno
+TNSC = ../CLASSIC/nlaunch.tns
+TCC  = ../CX/nlaunch.tcc
+TCO  = ../CX/nlaunch.tco
+TNSX = ../CX/nlaunch.tns
 FILES     = nlaunch.c patch.c patch_common.c patch_other.c ndless.c
 BUILDTNCO = buildtnco.exe
 BUILDIMG  = buildimg.exe
 DISTDIR   = ../src
 vpath %.tns $(DISTDIR)
 
-all: $(TNSC) $(TNSX) $(TNSL) $(BUILDTNCO) $(BUILDIMG) $(TNC)
+all: $(TNSC) $(TNSP) $(TNSX) $(TNSL) $(TNSF) buildtnco $(BUILDIMG) $(TNC)
 
 nlaunch_classic.o: $(FILES)
-	$(GCC) $(GCCFLAGS) -o nlaunch_classic.o -c "-DMODEL=0" $<
+	$(GCC) $(GCCFLAGS) -o nlaunch_classic.o    -c "-DMODEL=0" $<
 
-preloader_cx.o: preloader_cx.c
-	$(GCC) $(GCCFLAGS) -o preloader_cx.o    -c "-DMODEL=1" $<
-
-firstloader_cx.o: firstloader_cx.c
-	$(GCC) $(GCCFLAGS) -o firstloader_cx.o  -c "-DMODEL=1" $<
+preloader_classic.o: preloader.c
+	$(GCC) $(GCCFLAGS) -o preloader_classic.o  -c "-DMODEL=0" $<
 
 nlaunch_cx.o: $(FILES)
-	$(GCC) $(GCCFLAGS) -o nlaunch_cx.o      -c "-DMODEL=1" $<
+	$(GCC) $(GCCFLAGS) -o nlaunch_cx.o         -c "-DMODEL=1" $<
+
+preloader_cx.o: preloader.c
+	$(GCC) $(GCCFLAGS) -o preloader_cx.o       -c "-DMODEL=1" $<
+
+firstloader_cx.o: firstloader_cx.c
+	$(GCC) $(GCCFLAGS) -o firstloader_cx.o     -c "-DMODEL=1" $<
 
 $(TNSC): nlaunch_classic.o
+	$(LD) $(LDFLAGS) $^ -o $(@:.tns=.elf)
+	$(OBJCOPY) -O binary   $(@:.tns=.elf) $@
+
+$(TNSP): preloader_classic.o
 	$(LD) $(LDFLAGS) $^ -o $(@:.tns=.elf)
 	$(OBJCOPY) -O binary   $(@:.tns=.elf) $@
 
@@ -54,18 +64,18 @@ $(TNSF): firstloader_cx.o
 $(BUILDTNCO): buildtnco.c
 	$(HOST_GCC) -Os -s -o $@ $<
 
-$(BUILDIMG): buildimg.c
+$(BUILDIMG):  buildimg.c
 	$(HOST_GCC) -Os -s -o $@ $<
 
-$(TNC): $(TNSC) $(TNSF) $(TNSL) $(BUILDTNCO)
-	./$(BUILDTNCO) -classic nlaunch_classic.tns nlaunch.tno
-	./$(BUILDTNCO) -classic nlaunch_classic.tns nlaunch.tnc
-	./$(BUILDTNCO) -cpx     firstloader_cx.tns  nlaunch.tco
-	./$(BUILDTNCO) -cpx     firstloader_cx.tns  nlaunch.tcc
-	./$(BUILDTNCO) -cx      preloader_cx.tns    preloader.tns
+buildtnco: $(TNSC) $(TNSP) $(TNSX) $(TNSL) $(TNSF) $(BUILDTNCO)
+	./$(BUILDTNCO) -classic $(TNSC) $(TNSP) $(TNC)
+	./$(BUILDTNCO) -classic $(TNSC) $(TNSP) $(TNO)
+	./$(BUILDTNCO) -classic $(TNSC) $(TNSP) $(TNSC)
+	./$(BUILDTNCO) -cpx     $(TNSF) $(TNSF) $(TCC)
+	./$(BUILDTNCO) -cpx     $(TNSF) $(TNSF) $(TCO)
+	./$(BUILDTNCO) -cx      $(TNSX) $(TNSL) $(TNSX)
 
 clean:
 	rm -f *.o *.elf *.tns
-	rm -f $(DISTDIR)/$(TNC) $(DISTDIR)/$(TNO) $(DISTDIR)/$(TCC) $(DISTDIR)/$(TCO)
-	rm -f $(BUILDTNCO)
-	rm -f $(BUILDIMG)
+	rm -f ../CLASSIC/*.* ../CX/*.*
+	rm -f $(BUILDTNCO) $(BUILDIMG)

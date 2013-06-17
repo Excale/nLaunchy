@@ -51,27 +51,14 @@
  */
 #define NOP 0x00000000
 
-//! OS path from boot2
-#define OSPATH   M(0x11953920,0x118D9DA4)
 //! temp OS path from boot2
-#define TEMPPATH M(0x11952E6C,0x118D940C)
+#define TEMPPATH    (char *)M(0x11952E6C,0x118D940C)
 //! nLaunch path
-#define NLAUNCHPATH M(OSPATH,"/phoenix/install/nlaunch.tns")
+#define NLAUNCHPATH (char *)M(0x11953920,0x118D9DA4)
+//! file pointer from boot2
+#define FILEPOINTER (void *)M(0x11A6D4A8,0x11BFFCC0)
 
 typedef void FILE;
-struct _stat {
-    unsigned short st_dev;
-    unsigned int   st_ino;
-    unsigned int   st_mode;
-    unsigned short st_nlink;
-    unsigned short st_uid;
-    unsigned short st_gid;
-    unsigned short st_rdev;
-    unsigned int   st_size;
-    unsigned int   st_atime;
-    unsigned int   st_mtime;
-    unsigned int   st_ctime;
-};
 
 
 #endif

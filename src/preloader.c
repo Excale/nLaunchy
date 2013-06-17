@@ -21,18 +21,21 @@
 
 #include "nlaunch.h"
 
+#if MODEL==0
+static __attribute__((always_inline)) void put_byte(uint32_t absaddr, uint8_t short_in) {
+    *((uint8_t  *)absaddr) = short_in;
+}
+#endif
+
 void main(void) {
+    #if MODEL==1
     asm volatile(
         "LDR    R0, =0x119004F8       \n\t"
         "LDR    R1, =0x13E00C1E       \n\t"
         "STR    R1, [R0]              \n\t"
         "MCR    p15, 0, r0, c8, c7, 0 \n\t"
-        "LDR    PC, =0x13ECFA74       \n\t"
+        "LDR    PC, =0x13ECFA70       \n\t"
     );
-    struct _stat path_stat;
-    const char *path = "/phoenix/install/nlaunch.tns";
-    #if DEBUG
-    display_msg_to_screen(u"P",0,0);
     #endif
     *(volatile unsigned*)0x90060C00 = 0x1ACCE551;
     *(volatile unsigned*)0x90060008 = 0;
@@ -46,20 +49,18 @@ void main(void) {
         " mov %0, #0 \n"
         " mcr p15, 0, %0, c7, c7, 0 @ invalidate ICache and DCache \n"
     : "=r" (dummy));
+    
+    DISPLAY(P);
 
-    fclose((void *)0x11BFFCC0);
-    rename((char *)0x118D940C, (char *)0x118D9DA4);
-    rename("/documents/nlaunch/nlaunch.tns", path);
-
-    FILE * res_file;
-    res_file=fopen(path, "rb");
-    stat(path, &path_stat);
-    char *core = malloc(path_stat.st_size);
-    fread(core, path_stat.st_size, 1, res_file);
-    fclose(res_file);
-    #if DEBUG
-    display_msg_to_screen(u"P",0,0);
+    #if MODEL==0
+    put_byte(0x1181FD6B, 0xEA);
     #endif
+    fseek(FILEPOINTER, 0x60, 0);
+    char *core = malloc(0x2000);
+    fread(core, 1, 0x2000, FILEPOINTER);
+    fclose(FILEPOINTER);
+
+    DISPLAY(P);
     ((void (*)(void))(char*)core)();
     __builtin_unreachable();
 }

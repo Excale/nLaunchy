@@ -26,12 +26,20 @@ static const unsigned char part1[] = {
     0x54, 0x49, 0x2D, 0x4E, 0x73, 0x70, 0x69, 0x72, 0x65, 0x2E, 0x74, 0x6E, 0x63, 0x20, 0x31, 0x2E,
     0x31, 0x2E, 0x39, 0x31, 0x37, 0x30, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x30, 0x20,
     0x30, 0x0A, 0x5F, 0x5F, 0x52, 0x45, 0x53, 0x5F, 0x5F, 0x20, 0x31, 0x2E, 0x31, 0x2E, 0x39, 0x31,
-    0x37, 0x30, 0x20, 0x30, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x30, 0x0A, 0x0A, 0x1A,
+    0x37, 0x30, 0x20, 0x30, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x30, 0x0A, 0x0A, 0x1A
+};
+
+static const unsigned char part2[] = {
+    0x50, 0x4B, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x4E, 0x4C 
+};
+
+static const unsigned char part3[] = {
     0x50, 0x4B, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
 };
 
-static const unsigned char part2[] = {
+static const unsigned char part4[] = {
                                                                                         0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -58,23 +66,25 @@ static const unsigned char part2[] = {
     0x00, 0x00, 0x00, 0x00, 0x70, 0x11
 };
 
-static const unsigned char part3[][4] = {{0xB0, 0x02, 0x82, 0x11},
-                                         {0x60, 0xFA, 0x00, 0x18},
+static const unsigned char part5[][4] = {{0xB0, 0x02, 0x82, 0x11},
+                                         {0x58, 0xFA, 0x00, 0x18},
                                          {0xFC, 0xC6, 0x89, 0x11}};
 
 int main(int argc, char * argv[]) {
-    FILE * input;
+    FILE * input = NULL;
+    FILE * preloader;
     FILE * output;
     int  mode;
     long filesize;
-    long padding;
+    long filestart;
+    long fileend;
     long i;
 
-    if (argc != 4) {
+    if (argc != 5) {
         puts("nlaunch.t[nc][oc][cc][co] Builder v2.0\n"
-             "Usage: buildtnco -classic nlaunch_classic.tns nlaunch.tn[o/c]\n"
-             "       buildtnco -cx      preloader_cx.tns    preloader.tns\n"
-             "       buildtnco -cpx     firstloader_cx.tns  nlaunch.tc[o/c]\n");
+             "Usage: buildtnco -classic nlaunch_classic.tns preloader_classic.tns ../CLASSIC/nlaunch.tn[o/c/s]\n"
+             "       buildtnco -cx      nlaunch_classic.tns preloader_cx.tns      ../CX/nlaunch.tns\n"
+             "       buildtnco -cpx     dummy.tns           firstloader_cx.tns    ../CX/nlaunch.tc[o/c]\n");
         exit(1);
     }
     
@@ -92,58 +102,93 @@ int main(int argc, char * argv[]) {
         exit(1);
     }
 
-    input = fopen(argv[2], "rb");
-    if (!input) {
-        perror(argv[2]);
-        exit(1);
+    if( mode!=2 )
+    {
+        input = fopen(argv[2], "rb");
+        if (!input) {
+            perror(argv[2]);
+            exit(1);
+        }
     }
-
-    output = fopen(argv[3], "w+b");
-    if (!output) {
+    
+    preloader = fopen(argv[3], "rb");
+    if (!preloader) {
         fclose(input);
         perror(argv[3]);
         exit(1);
     }
 
-
-    // Header
-    fwrite(part1, sizeof(part1[0]), sizeof(part1)/sizeof(part1[0]), output);
-
-    // Smasher + padding
-    fwrite(part2, sizeof(part2[0]), sizeof(part2)/sizeof(part2[0]), output);
-    fwrite(part3[mode], sizeof(part3[0][0]), sizeof(part3[0])/sizeof(part3[0][0]), output);
-    for (i = 0; i < padding; i++) {
-        fputc(0x00, output);
+    output = fopen(argv[4], "w+b");
+    if (!output) {
+        fclose(input);
+        fclose(preloader);
+        perror(argv[4]);
+        exit(1);
     }
 
-    // Retrieve the size of the payload.
-    fseek(input, 0, SEEK_END);
-    filesize = ftell(input);
-    fseek(input, 0, SEEK_SET);
 
-    // Payload
+    fwrite(part1, sizeof(part1[0]), sizeof(part1)/sizeof(part1[0]), output);
+    filestart = ftell(output);
+    
+    if( mode!=2 )
+    {
+    
+        fwrite(part2, sizeof(part2[0]), sizeof(part2)/sizeof(part2[0]), output);
+        
+        fseek(input, 0, SEEK_END);
+        filesize = ftell(input);
+        fseek(input, 0, SEEK_SET);
+
+        for (i = 0; i < filesize; i++) {
+            int c = fgetc(input);
+            fputc(c, output);
+        }
+        
+        filestart = ftell(output);
+        
+        fseek(output, sizeof(part1) + 0x12, SEEK_SET);
+        fputc(filesize & 0xFF, output);
+        fputc(filesize >> 8  , output);
+    
+    }
+    
+    
+    fseek(output, filestart, SEEK_SET);
+    
+    fwrite(part3, sizeof(part3[0]), sizeof(part3)/sizeof(part3[0]), output);
+    
+    fseek(preloader, 0, SEEK_END);
+    filesize = ftell(preloader);
+    fseek(preloader, 0, SEEK_SET);
+    
+    fwrite(part4, sizeof(part4[0]), sizeof(part4)/sizeof(part4[0]), output);
+    fwrite(part5[mode], sizeof(part5[0][0]), sizeof(part5[0])/sizeof(part5[0][0]), output);
+
     for (i = 0; i < filesize; i++) {
-        int c = fgetc(input);
+        int c = fgetc(preloader);
         fputc(c, output);
     }
-
-    // More padding, if necessary.
+    
     if ( mode == 2 ) {
         for (i = 0; i < 0x1000; i++) {
             fputc(0x00, output);
         }
     }
-
-    // Update leading metadata
-    filesize = ftell(output);
-    fseek(output, 0x17, SEEK_SET);
-    fprintf(output, "%8ld", filesize);
     
-    fseek(output, 0x5A, SEEK_SET);
-    fputc((filesize - 0x5E) & 0xFF, output);
-    fputc((filesize - 0x5E) >> 8  , output);
+    fileend = ftell(output);
+
+    fseek(output, filestart + 0x1A, SEEK_SET);
+    filesize = fileend - filestart - sizeof(part3);
+    fputc(filesize & 0xFF, output);
+    fputc(filesize >> 8  , output);
+    
+    
+    fseek(output, 0x17, SEEK_SET);
+    fprintf(output, "%8ld", fileend);
+    
 
     fclose(input);
+    fclose(preloader);
     fclose(output);
     return 0;
 }
