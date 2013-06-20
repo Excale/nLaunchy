@@ -82,19 +82,19 @@ int main(int argc, char * argv[]) {
 
     if (argc != 5) {
         puts("nlaunch.t[nc][oc][cc][co] Builder v2.0\n"
-             "Usage: buildtnco -classic nlaunch_classic.tns preloader_classic.tns ../CLASSIC/nlaunch.tn[o/c/s]\n"
-             "       buildtnco -cx      nlaunch_classic.tns preloader_cx.tns      ../CX/nlaunch.tns\n"
-             "       buildtnco -cpx     dummy.tns           firstloader_cx.tns    ../CX/nlaunch.tc[o/c]\n");
+             "Usage: buildtnco -clr nlaunch_classic.tns preloader_classic.tns   ../CLASSIC/nlaunch.tn[o/c/s]\n"
+             "       buildtnco -cxr nlaunch_classic.tns preloader_cx.tns        ../CX/nlaunch.tns\n"
+             "       buildtnco -cxf dummy.tns           firstloader_cx.tns      ../CX/nlaunch.tc[o/c]\n");
         exit(1);
     }
     
-    if (!strcmp(argv[1], "-classic")) {
+    if (!strcmp(argv[1], "-clr")) {
         mode = 0;
     }
-    else if (!strcmp(argv[1], "-cx")) {
+    else if (!strcmp(argv[1], "-cxr")) {
         mode = 1;
     }
-    else if (!strcmp(argv[1], "-cpx")) {
+    else if (!strcmp(argv[1], "-cxf")) {
         mode = 2;
     }
     else {
@@ -169,10 +169,8 @@ int main(int argc, char * argv[]) {
         fputc(c, output);
     }
     
-    if ( mode == 2 ) {
-        for (i = 0; i < 0x1000; i++) {
-            fputc(0x00, output);
-        }
+    for (i = filesize; i < (mode==2? 0x1000: 0x400); i++) {
+        fputc(0x00, output);
     }
     
     fileend = ftell(output);
@@ -185,10 +183,15 @@ int main(int argc, char * argv[]) {
     
     fseek(output, 0x17, SEEK_SET);
     fprintf(output, "%8ld", fileend);
-    
 
+    
     fclose(input);
     fclose(preloader);
     fclose(output);
+    if( (mode==1 || mode==2) && fileend<0x1000 )
+    {
+        printf("File too small!");
+        return 1;
+    }
     return 0;
 }

@@ -130,6 +130,7 @@ Additional features
 ===================
 * Pressing ESC will trigger the "Download mode", allowing you to transfer
   documents to your Nspire via USB. Reset you Nspire to quit
+  /!\ This feature is broken on Nspire CX
 * Pressing TAB will try to load Linux by loading
   /documents/linux/linuxloader.tns
 
@@ -178,7 +179,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.
 
-
 Contact
 =======
 See https://github.com/Excale/nLaunchy
@@ -192,4 +192,5 @@ Changelog
 
 Greetings
 =========
+AlexisVieira for beta-testing. 
 Everyone who tries to push the envelope and get the most out of their platforms.

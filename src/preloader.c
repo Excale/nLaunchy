@@ -28,6 +28,7 @@ static __attribute__((always_inline)) void put_byte(uint32_t absaddr, uint8_t sh
 #endif
 
 void main(void) {
+    static const char nlaunchupdatefilename[] = "/documents/nlaunch/nlaunch.tns";
     #if MODEL==1
     asm volatile(
         "LDR    R0, =0x119004F8       \n\t"
@@ -51,11 +52,17 @@ void main(void) {
     : "=r" (dummy));
     
     DISPLAY(P);
-
     #if MODEL==0
     put_byte(0x1181FD6B, 0xEA);
     #endif
-    fseek(FILEPOINTER, 0x60, 0);
+    if(!mkdir("/phoenix/install/")) {
+        rename(nlaunchupdatefilename, NLAUNCHPATH);
+        hw_reset();
+    }
+    if(fseek(FILEPOINTER, 0x60, 0)) {
+        DISPLAY(H);
+        while(1) {}
+    }
     char *core = malloc(0x2000);
     fread(core, 1, 0x2000, FILEPOINTER);
     fclose(FILEPOINTER);
