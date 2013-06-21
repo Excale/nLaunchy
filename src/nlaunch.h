@@ -25,7 +25,7 @@
 #include <stdint.h>
 #include "boot2.h"
 
-//! Build options: MODEL:[0=CLASSIC,1=CX], DEBUG:[0-3], NDLESS[0,1=Include Ndless Loader]
+//! Build options: MODEL:[0=CLASSIC,1=CX], DEBUG:[0-2], NDLESS[0,1=Include Ndless Loader]
 /** Set in Makefile
 #define MODEL  0 */
 #define DEBUG  2

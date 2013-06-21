@@ -56,13 +56,13 @@ static __attribute__((always_inline)) void patch_CAS_3_1_0_392_extra(void)     {
     #if NDLESS
     write_ndless3x_loader(1,0);
     #endif
-    put_byte(0x1007A79B, 0xEA);
+    put_word(0x100B19EC, 0xEAFFFFFE);
 }
 static __attribute__((always_inline)) void patch_NCAS_3_1_0_392_extra(void)    {
     #if NDLESS
     write_ndless3x_loader(0,0);
     #endif
-    put_byte(0x1007A833, 0xEA);
+    put_word(0x100B172C, 0xEAFFFFFE);
 }
 
 static __attribute__((always_inline)) void patch_CAS_3_2_0_1212_extra(void)    {
@@ -120,13 +120,13 @@ static __attribute__((always_inline)) void patch_CXCAS_3_1_0_392_extra(void)   {
     #if NDLESS
     write_ndless3x_loader(3,0);
     #endif
-    put_byte(0x10079EBF, 0xEA);
+    put_word(0x100B1108, 0xEAFFFFFE);
 }
 static __attribute__((always_inline)) void patch_CXNCAS_3_1_0_392_extra(void)  {
     #if NDLESS
     write_ndless3x_loader(2,0);
     #endif
-    put_byte(0x10079F2F, 0xEA);
+    put_word(0x100B0E24, 0xEAFFFFFE);
 }
 
 static __attribute__((always_inline)) void patch_CXCAS_3_2_0_1212_extra(void)  {

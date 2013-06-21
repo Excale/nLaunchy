@@ -33,7 +33,7 @@ Needless to say, all steps are important ;-)
 4) rename the TNOC'ed OS to phoenix.tns
 5) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
-6) get to the CLASSIC folder
+6) On the computer, browse to the CLASSIC folder
 7) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
 8) reboot, go to the maintenance menu ( http://ti-pla.net/t5360 ), delete OS
@@ -71,12 +71,12 @@ Needless to say, all steps are important ;-)
 4) rename the TNOC'ed OS to phoenix.tns
 5) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
-6) get to the CX folder
+6) On the computer, browse to the CX folder
 7) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
 8) reboot (the reset button is the easiest way), go to the maintenance menu
    ( http://ti-pla.net/t5360 ), delete OS (option 2)
-9)reboot, transfer nlaunch.tco/tcc to your calculator (an error will certainly
+9) reboot, transfer nlaunch.tco/tcc to your calculator (an error will certainly
    be shown on the computer, check if it is ok on your calculator)
    - /!\ the initial exploit can fail. If the progress bar is stuck at 60% and
      nothing is shown (you should briefly see "YZ") at the top left of the
@@ -192,5 +192,5 @@ Changelog
 
 Greetings
 =========
-AlexisVieira for beta-testing. 
+AlexisVieira and flof0 for beta-testing. 
 Everyone who tries to push the envelope and get the most out of their platforms.
