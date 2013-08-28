@@ -115,21 +115,28 @@ Update of the target OS version
 ===============================
 1) get a compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
+
 2) Use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
+
 3) rename the TNOC'ed OS to phoenix.tns
+
 4) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
+
 5) reboot
    - /!\ first boot can be fairly long (max 3 min); the progression bar can be
      quite unstable.
+
 6) the old OS can now be found in nlaunch/phoenix.old.tns
 
 
 Update of nLaunchy
 ==================
 1) get to the CLASSIC or CX folder according to your calculator
+
 2) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system.
+
 3) reboot
 
 
@@ -137,8 +144,11 @@ Uninstallation
 ==============
 1) get any compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
+
 2) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
+
 3) reboot, go to the maintenance menu ( http://ti-pla.net/t5360 ), delete OS
+
 4) reboot, transfer the OS to your calculator
 
 Additional features
