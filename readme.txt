@@ -19,25 +19,34 @@ Needless to say, all steps are important ;-)
 ***** Clickpad and Touchpad installation (see below for CX) *****
 -----------------------------------------------------------------
 0) backup your documents from your nspire on your computer
+
 1) install the 1.4.1571 boot2, usually known as "1.4". See
    http://ti-pla.net/a10080  (easiest way to do it)
    http://ti-pla.net/a3503   (use only if you cannot use the first one)
    http://ti-pla.net/a3507   (use only if you cannot use the first one)
+
 2) get a compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
    - NOTE: Not all TI-OSes are compatible with nLaunchy.
      OSes 3.1.0.392, 3.2.0.1212, 3.2.0.1219 and 3.2.3.1233 are.
      For a full list of compatible OSes, check src/patch.c
+
 3) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
    (you can remove the examples too)
+
 4) rename the TNOC'ed OS to phoenix.tns
+
 5) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
+
 6) On the computer, browse to the CLASSIC folder
+
 7) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
+
 8) reboot, go to the maintenance menu ( http://ti-pla.net/t5360 ), delete OS
    (option 2)
+
 9) reboot, transfer nlaunch.tno/tnc to your calculator (an error will certainly
    be shown on the computer, check if it is ok on your calculator)
    - /!\ first boot can be fairly long (max 3 min); the progression bar can be
@@ -46,14 +55,14 @@ Needless to say, all steps are important ;-)
    - NOTE: unplugging the USB cable "at the right time", i.e. after sending
      the TNO/TNC and shortly after the bar has reached 60% again, may increase
      the reliability of the installation procedure.
-10)enjoy :-)
-   NOTE: if it is working fine and you want nLaunchy to be more stealthy when
-   booting, you can compile a quiet version ("DEBUG 1" in nlaunch.c).
+
+10) enjoy :-)
 
 
 **** CX installation (see above for Clickpad and Touchpad) *****
 ----------------------------------------------------------------
 0) backup your documents from your nspire on your computer
+
 1) install the 3.1.0.16 boot2, usually known as "3.1".
    If you currently have OS 3.1.0.392, 3.2.0.1212, 3.2.0.1219 or 3.2.3.1233 you
    already have it. If you have installed any newer version without TNOC-ing it,
@@ -61,21 +70,29 @@ Needless to say, all steps are important ;-)
    Otherwise, install OS 3.1.0.392:
    CX CAS: http://ti-pla.net/a3718
    CX    : http://ti-pla.net/a3717
+
 2) get a compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
    - NOTE: Not all TI-OSes are compatible with nLaunchy.
      OSes 3.1.0.392, 3.2.0.1212, 3.2.0.1219 and 3.2.3.1233 are.
      For a full list of compatible OSes, check src/patch.c
+
 3) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
    (you can remove the examples too)
+
 4) rename the TNOC'ed OS to phoenix.tns
+
 5) transfer phoenix.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
+
 6) On the computer, browse to the CX folder
+
 7) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
    the root of the user-accessible part of the file-system
+
 8) reboot (the reset button is the easiest way), go to the maintenance menu
    ( http://ti-pla.net/t5360 ), delete OS (option 2)
+
 9) reboot, transfer nlaunch.tco/tcc to your calculator (an error will certainly
    be shown on the computer, check if it is ok on your calculator)
    - /!\ the initial exploit can fail. If the progress bar is stuck at 60% and
@@ -88,12 +105,11 @@ Needless to say, all steps are important ;-)
      the TCO/TCC and shortly after the bar has reached 60% again, may increase
      the reliability of the installation procedure. Likewise, the second
      generation of Ndless (1.7/2.0) worked better when USB was unplugged.
-10)enjoy :-)
+
+10) enjoy :-)
    - /!\ when rebooting, the progress bar can sometimes be stuck a 60% with
      nothing shown at the top left of the screen. Simply press "reset" until it
      works.
-   NOTE: if it is working fine and you want nLaunchy to be more stealthy when
-   booting, you can compile a quiet version ("DEBUG 1" in nlaunch.c).
 
 
 Update of the target OS version
@@ -133,6 +149,8 @@ Additional features
   /!\ This feature is broken on Nspire CX
 * Pressing TAB will try to load Linux by loading
   /documents/linux/linuxloader.tns
+* If it is working fine and you want nLaunchy to be more stealthy when booting,
+  you can compile a quiet version ("DEBUG 1" in nlaunch.h).
 
 
 Troubleshooting
