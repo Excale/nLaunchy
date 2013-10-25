@@ -1,5 +1,5 @@
 /*
- * nLaunchy v2.2b
+ * nLaunchy v2.3
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy
@@ -109,17 +109,14 @@ static __attribute__((always_inline)) void install_resources(void) {
     if (do_install_resources) {
         FILE * osfile;
         FILE * nlaunchfile;
-        M(,FILE * nlaunchfile2;)
-        if ( (osfile = fopen((char *)osfilename, "r")) && (nlaunchfile = fopen(NLAUNCHPATH, "r")) M(,&& (nlaunchfile2 = fopen(NLAUNCHPATH, "r"))) ) {
+        if ( (osfile = fopen((char *)osfilename, "r")) && (nlaunchfile = fopen(NLAUNCHPATH, "r")) ) {
             purge_files("/phoenix", 0);
             purge_files("/ti84"   , 0);
             fclose(osfile);
             fclose(nlaunchfile);
-            M(,fclose(nlaunchfile2);)
         }
 
-        strcpy( NLAUNCHPATH, osfilename);
-
+        strcpy(NLAUNCHPATH, osfilename);
         rename(NLAUNCHPATH, TEMPPATH);
         put_word(M(0x1192C220,0x11ABBA54), 0xE1A00009);
         asm volatile(

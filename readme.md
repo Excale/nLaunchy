@@ -1,4 +1,4 @@
-nLaunchy v2.2
+nLaunchy v2.3
 =======================
 PLEASE READ THE WHOLE README BEFORE DOING ANYTHING.
 
@@ -53,7 +53,7 @@ Needless to say, all steps are important ;-)
      the boot as a failure
    - NOTE: unplugging the USB cable "at the right time", i.e. after sending
      the TNO/TNC and shortly after the bar has reached 60% again, may increase
-     the reliability of the installation procedure.
+     the reliability of the installation procedure
 
 10) enjoy :-)
 
@@ -96,19 +96,21 @@ Needless to say, all steps are important ;-)
    be shown on the computer, check if it is ok on your calculator)
    - /!\ the initial exploit can fail. If the progress bar is stuck at 60% and
      nothing is shown (you should briefly see "YZ") at the top left of the
-     screen, reset and send nlaunch.tco/tcc again.
+     screen, reset and send nlaunch.tco/tcc again
+   - /!\ if the screen becomes very bright (white/blue color), reset and try
+     again
    - /!\ getting to the OS the first time can be fairly long (max 3 min); the
      progression bar can be quite unstable. If the bar did not move at all
      during 3 minutes, consider the boot as a failure
    - NOTE: unplugging the USB cable "at the right time", i.e. after sending
      the TCO/TCC and shortly after the bar has reached 60% again, may increase
      the reliability of the installation procedure. Likewise, the second
-     generation of Ndless (1.7/2.0) worked better when USB was unplugged.
+     generation of Ndless (1.7/2.0) worked better when USB was unplugged
 
 10) enjoy :-)
    - /!\ when rebooting, the progress bar can sometimes be stuck a 60% with
      nothing shown at the top left of the screen. Simply press "reset" until it
-     works.
+     works
 
 
 Update of the target OS version
@@ -125,7 +127,7 @@ Update of the target OS version
 
 5) reboot
    - /!\ first boot can be fairly long (max 3 min); the progression bar can be
-     quite unstable.
+     quite unstable
 
 6) the old OS can now be found in nlaunch/phoenix.old.tns
 
@@ -135,7 +137,7 @@ Update of nLaunchy
 1) get to the CLASSIC or CX folder according to your calculator
 
 2) transfer nlaunch.tns to your calculator in the folder /nlaunch/, being at
-   the root of the user-accessible part of the file-system.
+   the root of the user-accessible part of the file-system
 
 3) reboot
 
@@ -159,7 +161,7 @@ Additional features
 * Pressing TAB will try to load Linux by loading
   /documents/linux/linuxloader.tns
 * If it is working fine and you want nLaunchy to be more stealthy when booting,
-  you can compile a quiet version ("DEBUG 1" in nlaunch.h).
+  you can compile a quiet version ("DEBUG 1" in nlaunch.h)
 
 
 Troubleshooting
@@ -167,7 +169,7 @@ Troubleshooting
 If you see any letter on the screen (except PP), see the Debug strings section
 
 CX: if the reset button doesn't work, use a screwdriver to open the battery
-door and remove the battery before plugging it back in.
+door and remove the battery before plugging it back in
 
 Debug strings
 =============
@@ -180,9 +182,9 @@ Signification of a few debug strings:
 
 Using Ndless with nLaunch
 =========================
-* Ndless 1.7/2.0 should work out of the box.
+* Ndless 1.7/2.0 should work out of the box
 * if you want to use Ndless 3.1 with nLaunch, use the regular ndless 3.1, but
-  make sure the revision is r800 or more.
+  make sure the revision is r800 or more
 
 
 License
@@ -219,5 +221,5 @@ Changelog
 
 Greetings
 =========
-AlexisVieira and flof0 for beta-testing. 
+AlexisVieira, critor, flof0, Legimet and more :)
 Everyone who tries to push the envelope and get the most out of their platforms.

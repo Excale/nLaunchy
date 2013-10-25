@@ -109,67 +109,115 @@ static __attribute__((always_inline)) void patch_CAS_3_2_3_1233_common(void) {
 static __attribute__((always_inline)) void patch_NCAS_3_2_3_1233_common(void) {
     write_osfilename(0x108FDCA8); // Change OS filename to load resources correctly
 }
+
+static __attribute__((always_inline)) void patch_CAS_3_6_0_546_common(void) {
+    write_osfilename(0x109FE684); // Change OS filename to load resources correctly
+}
+
+static __attribute__((always_inline)) void patch_NCAS_3_6_0_546_common(void) {
+    write_osfilename(0x109B9D18); // Change OS filename to load resources correctly
+}
+
 #elif MODEL==1
 static __attribute__((always_inline)) void patch_CXCAS_3_0_1_1753_common(void) {
     write_osfilename(0x108324D8); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXNCAS_3_0_1_1753_common(void) {
     write_osfilename(0x107D76E0); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXCAS_3_0_2_1791_common(void) {
     write_osfilename(0x10831D08); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXNCAS_3_0_2_1791_common(void) {
     write_osfilename(0x107D60D0); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXCAS_3_0_2_1793_common(void) {
     write_osfilename(0x10831D18); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXNCAS_3_0_2_1793_common(void) {
     write_osfilename(0x107D60E0); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXCAS_3_1_0_392_common(void) {
     write_osfilename(0x10862428); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXNCAS_3_1_0_392_common(void) {
     write_osfilename(0x10806120); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXCAS_3_2_0_1212_common(void) {
     write_osfilename(0x1093C40C); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXNCAS_3_2_0_1212_common(void) {
     write_osfilename(0x108DECE4); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXCAS_3_2_0_1219_common(void) {
     write_osfilename(0x1093C4BC); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXNCAS_3_2_0_1219_common(void) {
     write_osfilename(0x108DED94); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXCAS_3_2_3_1233_common(void) {
     write_osfilename(0x1093CAA0); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CXNCAS_3_2_3_1233_common(void) {
     write_osfilename(0x108DF368); // Change OS filename to load resources correctly
 }
 
+static __attribute__((always_inline)) void patch_CXCAS_3_2_4_1237_common(void) {
+    write_osfilename(0x1093CA90); // Change OS filename to load resources correctly
+}
+
+static __attribute__((always_inline)) void patch_CXNCAS_3_2_4_1237_common(void) {
+    write_osfilename(0x108DF368); // Change OS filename to load resources correctly
+}
+
+static __attribute__((always_inline)) void patch_CXCAS_3_3_0_538_common(void) {
+    write_osfilename(0x1095CEB0); // Change OS filename to load resources correctly
+}
+
+static __attribute__((always_inline)) void patch_CXCAS_3_6_0_546_common(void) {
+    write_osfilename(0x109FC0E0); // Change OS filename to load resources correctly
+}
+
+static __attribute__((always_inline)) void patch_CXNCAS_3_6_0_546_common(void) {
+    write_osfilename(0x1099B504); // Change OS filename to load resources correctly
+}
+
 
 static __attribute__((always_inline)) void patch_CMNCAS_3_1_0_392_common(void) {
-	write_osfilename(0x108002F8); // Change OS filename to load resources correctly
+    write_osfilename(0x108002F8); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CMCAS_3_1_0_392_common(void) {
-	write_osfilename(0x1085C600); // Change OS filename to load resources correctly
+    write_osfilename(0x1085C600); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CMNCAS_3_2_0_1212_common(void) {
-	write_osfilename(0x108DDAF8); // Change OS filename to load resources correctly
+    write_osfilename(0x108DDAF8); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CMCAS_3_2_0_1212_common(void) {
-	write_osfilename(0x1093B220); // Change OS filename to load resources correctly
+    write_osfilename(0x1093B220); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CMNCAS_3_2_0_1219_common(void) {
-	write_osfilename(0x108DDBA8); // Change OS filename to load resources correctly
+    write_osfilename(0x108DDBA8); // Change OS filename to load resources correctly
 }
+
 static __attribute__((always_inline)) void patch_CMCAS_3_2_0_1219_common(void) {
-	write_osfilename(0x1093B2D0); // Change OS filename to load resources correctly
+    write_osfilename(0x1093B2D0); // Change OS filename to load resources correctly
 }
+
 #endif

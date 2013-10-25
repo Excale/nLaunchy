@@ -4,6 +4,7 @@
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013 nLaunch CX guy
  * Copyright (C) 2013 Excale
+ * Copyright (C) 2013 Legimet
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2, as
@@ -72,8 +73,8 @@ static const unsigned char part5[][4] = {{0xB0, 0x02, 0x82, 0x11},
 
 int main(int argc, char * argv[]) {
     FILE * input = NULL;
-    FILE * preloader;
-    FILE * output;
+    FILE * preloader = NULL;
+    FILE * output = NULL;
     int  mode;
     long filesize;
     long filestart;
@@ -185,11 +186,12 @@ int main(int argc, char * argv[]) {
     fprintf(output, "%8ld", fileend);
 
     
-    fclose(input);
+    if (mode != 2) {
+        fclose(input);
+    }
     fclose(preloader);
     fclose(output);
-    if( (mode==1 || mode==2) && fileend<0x1000 )
-    {
+    if( (mode==1 || mode==2) && fileend<0x1000 ) {
         printf("File too small!");
         return 1;
     }

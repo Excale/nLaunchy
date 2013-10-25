@@ -25,11 +25,12 @@
 #include <stdint.h>
 #include "boot2.h"
 
-//! Build options: MODEL:[0=CLASSIC,1=CX], DEBUG:[0-2], NDLESS[0,1=Include Ndless Loader]
+//! Build options: MODEL:[0=CLASSIC,1=CX], DEBUG:[0-2], NDLESS[0,1=Include Ndless Loader], OVERCLOCK[0,1=Overclock the boot2 and some OSes]
 /** Set in Makefile
 #define MODEL  0 */
 #define DEBUG  2
 #define NDLESS 1
+#define OVERCLOCK 1
 //! End of build options
 
 #if MODEL==0

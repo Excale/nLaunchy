@@ -41,12 +41,10 @@ static __attribute__((always_inline)) void patch_CAS_3_0_1_1753_extra(void)    {
 }
 static __attribute__((always_inline)) void patch_NCAS_3_0_1_1753_extra(void)   {
     put_byte(0x10079243, 0xEA);
-
 }
 
 static __attribute__((always_inline)) void patch_CAS_3_0_2_1791_extra(void)    {
     put_byte(0x100791A3, 0xEA);
-
 }
 static __attribute__((always_inline)) void patch_NCAS_3_0_2_1791_extra(void)   {
     put_byte(0x10079243, 0xEA);
@@ -66,37 +64,65 @@ static __attribute__((always_inline)) void patch_NCAS_3_1_0_392_extra(void)    {
 }
 
 static __attribute__((always_inline)) void patch_CAS_3_2_0_1212_extra(void)    {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x10084A63, 0xEA);
 }
 static __attribute__((always_inline)) void patch_NCAS_3_2_0_1212_extra(void)   {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x10084B13, 0xEA);
 }
 
 static __attribute__((always_inline)) void patch_CAS_3_2_0_1219_extra(void)    {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x10084A63, 0xEA);
 }
 static __attribute__((always_inline)) void patch_NCAS_3_2_0_1219_extra(void)   {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x10084B13, 0xEA);
 }
 
 static __attribute__((always_inline)) void patch_CAS_3_2_3_1233_extra(void)    {
+    #if OVERCLOCK
     put_word(0x10000268, NOP);
+    #endif
     put_byte(0x10084E8B, 0xEA);
 }
 static __attribute__((always_inline)) void patch_NCAS_3_2_3_1233_extra(void)   {
+    #if OVERCLOCK
     put_word(0x10000268, NOP);
+    #endif
     put_byte(0x10084F3B, 0xEA);
+}
+
+static __attribute__((always_inline)) void patch_CAS_3_6_0_546_extra(void) {
+    #if OVERCLOCK
+    put_word(0x10000268, NOP);
+    #endif
+    put_byte(0x1008E157, 0xEA);
+    put_word(0x10136418, 0xE12FFF1E);
+    put_word(0x100BEB6C, 0xE12FFF1E);
+}
+static __attribute__((always_inline)) void patch_NCAS_3_6_0_546_extra(void) {
+    #if OVERCLOCK
+    put_word(0x10000268, NOP);
+    #endif
+    put_byte(0x1008E1FB, 0xEA);
+    put_word(0x10135DF4, 0xE12FFF1E);
+    put_word(0x100BE8B4, 0xE12FFF1E);
 }
 
 #elif MODEL==1
 
 static __attribute__((always_inline)) void patch_CXCAS_3_0_1_1753_extra(void)  {
     put_byte(0x100788C7, 0xEA);
-
 }
 static __attribute__((always_inline)) void patch_CXNCAS_3_0_1_1753_extra(void) {
     put_byte(0x10078937, 0xEA);
@@ -130,31 +156,80 @@ static __attribute__((always_inline)) void patch_CXNCAS_3_1_0_392_extra(void)  {
 }
 
 static __attribute__((always_inline)) void patch_CXCAS_3_2_0_1212_extra(void)  {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x10084273, 0xEA);
 }
 static __attribute__((always_inline)) void patch_CXNCAS_3_2_0_1212_extra(void) {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x100842F3, 0xEA);
 }
 
 static __attribute__((always_inline)) void patch_CXCAS_3_2_0_1219_extra(void)  {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x10084273, 0xEA);
 }
 static __attribute__((always_inline)) void patch_CXNCAS_3_2_0_1219_extra(void) {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x100842F3, 0xEA);
 }
 
 static __attribute__((always_inline)) void patch_CXCAS_3_2_3_1233_extra(void)  {
+    #if OVERCLOCK
     put_word(0x10000268, NOP);
+    #endif
     put_byte(0x1008469B, 0xEA);
 }
 static __attribute__((always_inline)) void patch_CXNCAS_3_2_3_1233_extra(void) {
+    #if OVERCLOCK
     put_word(0x10000268, NOP);
+    #endif
     put_byte(0x1008471B, 0xEA);
 }
+static __attribute__((always_inline)) void patch_CXCAS_3_2_4_1237_extra(void)  {
+    #if OVERCLOCK
+    put_word(0x10000268, NOP);
+    #endif
+    put_byte(0x1008469B, 0xEA);
+}
+
+static __attribute__((always_inline)) void patch_CXNCAS_3_2_4_1237_extra(void) {
+    #if OVERCLOCK
+    put_word(0x10000268, NOP);
+    #endif
+    put_byte(0x1008471B, 0xEA);
+}
+static __attribute__((always_inline)) void patch_CXCAS_3_3_0_538_extra(void)  {
+    #if OVERCLOCK
+    put_word(0x10000268, NOP);
+    #endif
+    put_byte(0x10085F57, 0xEA);
+}
+
+static __attribute__((always_inline)) void patch_CXCAS_3_6_0_546_extra(void)  {
+    #if OVERCLOCK
+    put_word(0x10000268, NOP);
+    #endif
+    put_byte(0x1008D7A7, 0xEA);
+    put_word(0x10135E8C, 0xE12FFF1E);
+    put_word(0x100BE1BC, 0xE12FFF1E);
+}
+static __attribute__((always_inline)) void patch_CXNCAS_3_6_0_546_extra(void) {
+    #if OVERCLOCK
+    put_word(0x10000268, NOP);
+    #endif
+    put_byte(0x1008D81B, 0xEA);
+    put_word(0x10135838, 0xE12FFF1E);
+    put_word(0x100BDED4, 0xE12FFF1E);
+}
+
 
 static __attribute__((always_inline)) void patch_CMCAS_3_1_0_392_extra(void)   {
     put_byte(0x10076913, 0xEA);
@@ -164,20 +239,28 @@ static __attribute__((always_inline)) void patch_CMNCAS_3_1_0_392_extra(void)  {
 }
 
 static __attribute__((always_inline)) void patch_CMCAS_3_2_0_1212_extra(void)  {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x100801AF, 0xEA);
 }
 static __attribute__((always_inline)) void patch_CMNCAS_3_2_0_1212_extra(void) {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x1008022F, 0xEA);
 }
 
 static __attribute__((always_inline)) void patch_CMCAS_3_2_0_1219_extra(void)  {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x100801AF, 0xEA);
 }
 static __attribute__((always_inline)) void patch_CMNCAS_3_2_0_1219_extra(void) {
+    #if OVERCLOCK
     put_word(0x10000258, NOP);
+    #endif
     put_byte(0x1008022F, 0xEA);
 }
 

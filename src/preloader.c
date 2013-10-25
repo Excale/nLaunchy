@@ -67,6 +67,13 @@ void main(void) {
     fread(core, 1, 0x2000, FILEPOINTER);
     fclose(FILEPOINTER);
 
+    __asm volatile(
+        " .arm \n"
+        "0: mrc p15, 0, r15, c7, c10, 3 @ test and clean DCache \n"
+        " bne 0b \n"
+        " mov %0, #0 \n"
+        " mcr p15, 0, %0, c7, c7, 0 @ invalidate ICache and DCache \n"
+    : "=r" (dummy));
     DISPLAY(P);
     ((void (*)(void))(char*)core)();
     __builtin_unreachable();

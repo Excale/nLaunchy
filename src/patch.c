@@ -107,6 +107,14 @@ static __attribute__((always_inline)) void patch_OS(void) {
             patch_CAS_3_2_3_1233_extra();
             patch_CAS_3_2_3_1233_common();
         break;
+        case 0x10375bb0:    // TI-Nspire-3.6.0.546/phoenix.raw
+            patch_NCAS_3_6_0_546_extra();
+            patch_NCAS_3_6_0_546_common();
+        break;
+        case 0x103765f0:    // TI-NspireCAS-3.6.0.546/phoenix.raw
+            patch_CAS_3_6_0_546_extra();
+            patch_CAS_3_6_0_546_common();
+        break;
         case 0x10166dc0:    // TI-NspireCAS-1.1.6925/phoenix.raw
         case 0x10138fd0:    // TI-Nspire-1.1.7320/phoenix.raw
         case 0x101476d0:    // TI-Nspire-1.1.8008/phoenix.raw
@@ -147,7 +155,7 @@ static __attribute__((always_inline)) void patch_OS(void) {
         case 0x102ed170:    // TI-NspireCX-3.0.2.1791/phoenix.raw
                             // TI-NspireCX-3.0.2.1793/phoenix.raw
             // Warning: these two OS versions have the same reset vector !
-            if (*((uint32_t *)0x10831D08) == 0x6F68702F) {
+            if (*((uint32_t *)0x107D60D0) == 0x6F68702F) {
                 patch_CXNCAS_3_0_2_1791_common();
                 patch_CXNCAS_3_0_2_1791_extra();
             } else {
@@ -158,7 +166,7 @@ static __attribute__((always_inline)) void patch_OS(void) {
         case 0x102ed8c0:    // TI-NspireCXCAS-3.0.2.1791/phoenix.raw
                             // TI-NspireCXCAS-3.0.2.1793/phoenix.raw
             // Warning: these two OS versions have the same reset vector !
-            if (*((uint32_t *)0x107D60D0) == 0x6F68702F) {
+            if (*((uint32_t *)0x10831D08) == 0x6F68702F) {
                 patch_CXCAS_3_0_2_1791_common();
                 patch_CXCAS_3_0_2_1791_extra();
             } else {
@@ -191,15 +199,39 @@ static __attribute__((always_inline)) void patch_OS(void) {
             patch_CXCAS_3_2_0_1219_common();
         break;
         case 0x103414f0:    // TI-NspireCX-3.2.3.1233/phoenix.raw
-            patch_CXNCAS_3_2_3_1233_extra();
-            patch_CXNCAS_3_2_3_1233_common();
+                            // TI-NspireCX-3.2.4.1237/phoenix.raw
+            // Warning: these two OS versions have the same reset vector !
+            if (*((uint32_t *)0x108DF348) == 0x37333231) {
+                patch_CXNCAS_3_2_3_1233_extra();
+                patch_CXNCAS_3_2_3_1233_common();
+            }
+            else {
+                patch_CXNCAS_3_2_4_1237_extra();
+                patch_CXNCAS_3_2_4_1237_common();
+            }
         break;
         case 0x10341e40:    // TI-NspireCXCAS-3.2.3.1233/phoenix.raw
             patch_CXCAS_3_2_3_1233_extra();
             patch_CXCAS_3_2_3_1233_common();
         break;
-        
-        
+        case 0x10341e30:    // TI-NspireCXCAS-3.2.4.1237/phoenix.raw
+            patch_CXCAS_3_2_4_1237_extra();
+            patch_CXCAS_3_2_4_1237_common();
+        break;
+        case 0x103454a0:    // TI-NspireCXCAS-3.3.0.538/phoenix.raw
+            patch_CXCAS_3_3_0_538_extra();
+            patch_CXCAS_3_3_0_538_common();
+        break;
+        case 0x10375620:    // TI-NspireCX-3.6.0.546/phoenix.raw
+            patch_CXNCAS_3_6_0_546_extra();
+            patch_CXNCAS_3_6_0_546_common();
+        break;
+        case 0x10376090:    // TI-NspireCXCAS-3.6.0.546/phoenix.raw
+            patch_CXCAS_3_6_0_546_extra();
+            patch_CXCAS_3_6_0_546_common();
+        break;
+
+
         case 0x102dbf20:    // TI-NspireCM-3.1.0.392/phoenix.raw
             patch_CMNCAS_3_1_0_392_extra();
             patch_CMNCAS_3_1_0_392_common();
@@ -208,19 +240,19 @@ static __attribute__((always_inline)) void patch_OS(void) {
             patch_CMCAS_3_1_0_392_extra();
             patch_CMCAS_3_1_0_392_common();
         break;
-        case 0x1033c360: // TI-NspireCM-3.2.0.1212/phoenix.raw
+        case 0x1033c360:    // TI-NspireCM-3.2.0.1212/phoenix.raw
             patch_CMNCAS_3_2_0_1212_extra();
             patch_CMNCAS_3_2_0_1212_common();
         break;
-        case 0x1033ccb0: // TI-NspireCMCAS-3.2.0.1212/phoenix.raw
+        case 0x1033ccb0:    // TI-NspireCMCAS-3.2.0.1212/phoenix.raw
             patch_CMCAS_3_2_0_1212_extra();
             patch_CMCAS_3_2_0_1212_common();
         break;
-        case 0x1033c410: // TI-NspireCM-3.2.0.1219/phoenix.raw
+        case 0x1033c410:    // TI-NspireCM-3.2.0.1219/phoenix.raw
             patch_CMNCAS_3_2_0_1219_extra();
             patch_CMNCAS_3_2_0_1219_common();
         break;
-        case 0x1033cd60: // TI-NspireCMCAS-3.2.0.1219/phoenix.raw
+        case 0x1033cd60:    // TI-NspireCMCAS-3.2.0.1219/phoenix.raw
             patch_CMCAS_3_2_0_1219_extra();
             patch_CMCAS_3_2_0_1219_common();
         break;
