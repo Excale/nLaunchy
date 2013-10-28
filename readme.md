@@ -5,6 +5,7 @@ PLEASE READ THE WHOLE README BEFORE DOING ANYTHING.
 nLaunchy is a set of programs and crafted OS updates suitable for:
 * Nspire Clickpad and Touchpad calculators running boot2 1.4.1571 ("1.4");
 * Nspire CX calculators running boot2 3.1.0.16 ("3.1").
+
 It enables users to install and launch arbitrary OS updates located into the
 user-accessible part of the filesystem - especially Linux :-) (see
 http://github.com/tangrs/linux for more information )
@@ -189,10 +190,10 @@ Using Ndless with nLaunch
 
 License
 =======
-Copyright (C) 2012-2013 nLaunch team
-Copyright (C) 2013 nLaunch CX guy
-Copyright (C) 2013 Excale
-Copyright (C) 2013 Lionel Debroux
+* Copyright (C) 2012-2013 nLaunch team
+* Copyright (C) 2013 nLaunch CX guy
+* Copyright (C) 2013 Excale
+* Copyright (C) 2013 Lionel Debroux
 
 
 This program is free software; you can redistribute it and/or modify
@@ -215,11 +216,15 @@ See https://github.com/Excale/nLaunchy
 
 Changelog
 =========
-2013-04-01: v2.1: Forked nLaunch CX to nLaunchy and added the "switcher" feature
-2013-04-01: v2.0: CX support, by "nLaunch CX guy"
-2013-01-01: v1.0: First public version, by "nLaunch team"
+* 2013-10-25: v2.3: Release 2.3 
+* 2013-08-28: v2.2: Release 2.2 
+* 2013-04-01: v2.1: Forked nLaunch CX to nLaunchy and added the "switcher"
+                    feature
+* 2013-04-01: v2.0: CX support, by "nLaunch CX guy"
+* 2013-01-01: v1.0: First public version, by "nLaunch team"
 
 Greetings
 =========
 AlexisVieira, critor, flof0, Legimet and more :)
+
 Everyone who tries to push the envelope and get the most out of their platforms.
