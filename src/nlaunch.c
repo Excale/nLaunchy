@@ -1,10 +1,10 @@
 /*
- * nLaunchy v2.3
+ * nLaunchy v2.4
  *
  * Copyright (C) 2012-2013 nLaunch team
- * Copyright (C) 2013 nLaunch CX guy
- * Copyright (C) 2013 Excale
- * Copyright (C) 2013 Lionel Debroux
+ * Copyright (C) 2013      nLaunch CX guy
+ * Copyright (C) 2013-2014 Excale
+ * Copyright (C) 2013      Lionel Debroux
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2, as
@@ -25,22 +25,20 @@
 // ================================================================================================
 // Variables
 // ================================================================================================
-static uint32_t os_version = 0;
-static uint8_t  do_install_resources = 0;
-static const char osfilename[] = "/phoenix/install/phoenix.tns";
-static const char osupdatefilename[] = "/documents/nlaunch/phoenix.tns";
-static const char osoldfilename[] = "/documents/nlaunch/phoenix.old.tns";
-static const char linuxloaderfilename[] = "/documents/linux/linuxloader.tns";
+static uint8_t    do_install_resources = 0;
+static const char osfilename[] =            "/phoenix/install/phoenix.tns";
 static const char nlaunchupdatefilename[] = "/documents/nlaunch/nlaunch.tns";
+static const char osupdatefilename[] =      "/documents/nlaunch/phoenix.tns";
+#if MULTIOS
+static       char osmultiupdatefilename[] = "/documents/nlaunch/phoenix_0.tns";
+#endif
+static const char osoldfilename[] =         "/documents/nlaunch/phoenix.old.tns";
+static const char linuxloaderfilename[] =   "/documents/linux/linuxloader.tns";
 
 
 // ================================================================================================
 // Functions
 // ================================================================================================
-static __attribute__((always_inline)) uint32_t get_word(uint32_t absaddr) {
-    return *((uint32_t *)absaddr);
-}
-
 static __attribute__((always_inline)) void put_word(uint32_t absaddr, uint32_t long_in) {
     *((uint32_t *)absaddr) = long_in;
 }
@@ -49,40 +47,33 @@ static __attribute__((always_inline)) void put_byte(uint32_t absaddr, uint8_t sh
     *((uint8_t  *)absaddr) = short_in;
 }
 
+//! Update nLaunchy if needed.
+static __attribute__((always_inline)) void update_nlaunch(void) {
+    FILE * nlaunchfile;
+    if ((nlaunchfile = fopen(nlaunchupdatefilename, "r"))) {
+        fclose(nlaunchfile);
+        unlink(NLAUNCHPATH);
+        rename(nlaunchupdatefilename, NLAUNCHPATH);
+        RESET();
+    }
+}
+
+//! Launch download mode.
 static __attribute__((always_inline)) void launch_download_mode(void) {
     DISPLAY(D);
     #if MODEL==1
     cx_load_function(3);
     #endif
-    asm volatile(
-        "LDR    R4, =" M("0x11952E40","0x118D932C") "\n\t"
+    __asm volatile(
+        "LDR    R4, =" M("0x11952E40","0x118D932C") "\n"
     );
     download_mode();
-    hw_reset();
-    __builtin_unreachable();
-}
-
-//! Make the launcher reboot-proof.
-static __attribute((always_inline)) void make_reboot_proof(void) {
-    FILE * nlaunchfile;
-    if ((nlaunchfile = fopen(NLAUNCHPATH, "r"))) {
-        fclose(nlaunchfile);
-        if ((nlaunchfile = fopen((char *)nlaunchupdatefilename, "r"))) {
-            fclose(nlaunchfile);
-            unlink(NLAUNCHPATH);
-            rename((char *)nlaunchupdatefilename, NLAUNCHPATH);
-            hw_reset();
-            __builtin_unreachable();
-        }
-    } else {
-        rename(TEMPPATH, NLAUNCHPATH);
-        do_install_resources = 1;
-    }
+    RESET();
 }
 
 //! Update the OS if needed.
-static __attribute((always_inline)) void update_OS(void) {
-    unsigned short keypad = *(volatile unsigned short*)0x900E001C;
+static __attribute__((always_inline)) void update_OS(void) {
+    uint8_t keypad = *(volatile uint16_t*)0x900E001C;
     keypad &= (1<<7);
     if ((!keypad) ^ MODEL) {
         launch_download_mode();
@@ -90,16 +81,16 @@ static __attribute((always_inline)) void update_OS(void) {
     }
 
     FILE * osfile;
-    if ((osfile = fopen((char *)osupdatefilename, "r"))) {
+    if ((osfile = fopen(osupdatefilename, "r"))) {
         fclose(osfile);
-        if ((osfile = fopen((char *)osfilename, "r"))) {
+        if ((osfile = fopen(osfilename, "r"))) {
         fclose(osfile);
-            if( rename((char *)osfilename, (char *)osoldfilename) ) {
+            if (rename(osfilename, osoldfilename)) {
                 DISPLAY(K);
                 return;
             }
         }
-        rename((char *)osupdatefilename, (char *)osfilename);
+        rename(osupdatefilename, osfilename);
         do_install_resources = 1;
     }
 }
@@ -109,36 +100,40 @@ static __attribute__((always_inline)) void install_resources(void) {
     if (do_install_resources) {
         FILE * osfile;
         FILE * nlaunchfile;
-        if ( (osfile = fopen((char *)osfilename, "r")) && (nlaunchfile = fopen(NLAUNCHPATH, "r")) ) {
-            purge_files("/phoenix", 0);
-            purge_files("/ti84"   , 0);
+        if ( (nlaunchfile = fopen(NLAUNCHPATH, "r")) && (osfile = fopen(osfilename, "r")) ) {
+            purge_dir("/phoenix", 0);
+            purge_dir("/ti84"   , 0);
             fclose(osfile);
             fclose(nlaunchfile);
+        } else {
+            DISPLAY(C);
         }
 
         strcpy(NLAUNCHPATH, osfilename);
         rename(NLAUNCHPATH, TEMPPATH);
-        put_word(M(0x1192C220,0x11ABBA54), 0xE1A00009);
-        asm volatile(
-            "LDR    R0, =" M("0x11952E6C","0x118D940C") "\n\t"
-            "LDR    R1, =" M("0x1192C2C8","0x11AB9730") "\n\t"
-            "LDR    R9, =" M("0x11952E6C","0x118D940C") "\n\t"
-            "MOV    LR, PC                               \n\t"
-            "LDR    PC, =" M("0x1192C120","0x11ABB96C") "\n\t"
+        //DISPLAY(X);
+        put_byte(M(0x1192C220,0x11ABBA54), 0x09);
+        __asm volatile(
+            "LDR    R0, =" M("0x11952E6C","0x118D940C") "\n"
+            "LDR    R1, =" M("0x1192C2C8","0x11AB9730") "\n"
+            "LDR    R9, =" M("0x11952E6C","0x118D940C") "\n"
+            "MOV    LR, PC                               \n"
+            "LDR    PC, =" M("0x1192C120","0x11ABB96C") "\n"
         );
+        //DISPLAY(Y);
         rename(TEMPPATH, NLAUNCHPATH);
-        hw_reset();
-        __builtin_unreachable();
+        //DISPLAY(Z);
+        RESET();
     }
 }
 
 //! Load the OS.
 static __attribute__((always_inline)) void load_OS(void) {
 
-    unsigned short keypad = *(volatile unsigned short*)0x900E001C;
+    uint16_t keypad = *(volatile uint16_t*)0x900E001C;
     keypad &= (1<<9);
-    strcpy( NLAUNCHPATH, ((!keypad) ^ MODEL)? linuxloaderfilename : osfilename );
-        
+    strcpy(NLAUNCHPATH, ((!keypad) ^ MODEL) ? linuxloaderfilename : osfilename);
+
     #if MODEL==0
     put_word(0x11800970, 0xE12FFF1E);
     put_byte(0x11802293, 0xEA);
@@ -149,8 +144,8 @@ static __attribute__((always_inline)) void load_OS(void) {
     put_word(0x11802930, NOP);
     put_word(0x11802970, NOP);
     put_word(0x11802AC4, NOP);
-    put_word(0x900B0000, 0x1002);
-    put_word(0x900B000C, 0x4);
+    put_word(0x900B0000, 0x00001002);
+    put_word(0x900B000C, 0x00000004);
     #elif MODEL==1
     put_word(0x1187D33C, 0xE12FFF1E);
     put_word(0x11AB6E4C, 0xE59F3000);
@@ -164,26 +159,28 @@ static __attribute__((always_inline)) void load_OS(void) {
     put_byte(0x11AB71AB, 0xEA);
     put_word(0x11AB7420, 0xEA000092);
     put_word(0x11AB76BC, NOP);
-    put_word(0x900B0000, 0x30A002);
-    put_word(0x900B000C, 0x4);
+    put_word(0x900B0000, 0x0030A002);
+    put_word(0x900B000C, 0x00000004);
     #endif
-    if ( load_os(1) ) {
+    if (load_os(1)) {
         DISPLAY(F);
-        while(1) {}
-        __builtin_unreachable();
+        HANG();
     }
 }
-//! Detect the OS version.
-static __attribute__((always_inline)) void detect_OS_version(void) {
-    os_version = get_word(0x10000020);
+
+//! Purge logs.
+static __attribute__((always_inline)) void purge_logs(void) {
+    #if PURGE_LOGS
+    purge_dir("/logs", 0);
+    #endif
 }
 
 #include "patch.c"
 
 //! Jump to OS, without return.
 static __attribute__((always_inline, noreturn)) void launch_OS(void) {
-    asm volatile(
-        "LDR    PC, =0x10000000    \n\t"
+    __asm volatile(
+        "LDR    PC, =0x10000000 \n"
     );
     __builtin_unreachable();
 }
@@ -191,7 +188,7 @@ static __attribute__((always_inline, noreturn)) void launch_OS(void) {
 int main(void) {
 
         DISPLAY(1);
-    make_reboot_proof();
+    update_nlaunch();
         DISPLAY(2);
     update_OS();
         DISPLAY(3);
@@ -199,7 +196,7 @@ int main(void) {
         DISPLAY(4);
     load_OS();
         DISPLAY(5);
-    detect_OS_version();
+    purge_logs();
         DISPLAY(6);
     patch_OS();
         DISPLAY(7);

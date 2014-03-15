@@ -16,15 +16,15 @@ struct stat {
     unsigned int st_mtime;
     unsigned int st_ctime;
 };
-#define fopen   ((void*(*)(const char *, const char *))0xAAAAAAAA)
-#define _stat   ((void (*)(const char *, void *))0xBBBBBBBB)
-#define malloc  ((void*(*)(unsigned int))0xCCCCCCCC)
-#define fread   ((void*(*)(void *, unsigned int, unsigned int, FILE *))0xDDDDDDDD)
-#define fclose  ((void (*)(void *))0xEEEEEEEE)
+#define fopen ((void*(*)(const char *, const char *))0xAAAAAAAA)
+#define _stat ((void (*)(const char *, void *))0xBBBBBBBB)
+#define malloc ((void*(*)(unsigned int))0xCCCCCCCC)
+#define fread ((void*(*)(void *, unsigned int, unsigned int, FILE *))0xDDDDDDDD)
+#define fclose ((void (*)(void *))0xEEEEEEEE)
 
 
 
-void main(void) {
+int main(void) {
     struct stat res_stat;
 
     //Watchdog
@@ -33,7 +33,7 @@ void main(void) {
     *(volatile unsigned*)0x90060C00 = 0;
 
 
-    const char *res_path = NDLESS_DIR "/ndless_resources.tns";
+    const char *res_path = NDLESS_DIR "/ndless_resources\0\0\0\0\0\0\0\0";
     FILE * res_file;
     if ( (res_file=fopen(res_path, "rb")) )
     {

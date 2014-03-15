@@ -2,9 +2,9 @@
  * buildtnco - helper for nLaunchy
  *
  * Copyright (C) 2012-2013 nLaunch team
- * Copyright (C) 2013 nLaunch CX guy
- * Copyright (C) 2013 Excale
- * Copyright (C) 2013 Legimet
+ * Copyright (C) 2013      nLaunch CX guy
+ * Copyright (C) 2013-2014 Excale
+ * Copyright (C) 2013      Legimet
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2, as
@@ -83,9 +83,9 @@ int main(int argc, char * argv[]) {
 
     if (argc != 5) {
         puts("nlaunch.t[nc][oc][cc][co] Builder v2.0\n"
-             "Usage: buildtnco -clr nlaunch_classic.tns preloader_classic.tns   ../CLASSIC/nlaunch.tn[o/c/s]\n"
-             "       buildtnco -cxr nlaunch_classic.tns preloader_cx.tns        ../CX/nlaunch.tns\n"
-             "       buildtnco -cxf dummy.tns           firstloader_cx.tns      ../CX/nlaunch.tc[o/c]\n");
+             "Usage: buildtnco -clr nlaunch_classic.tns preloader_classic.tns ../CLASSIC/nlaunch.tn[o/c/s]\n"
+             "       buildtnco -cxr nlaunch_classic.tns preloader_cx.tns      ../CX/nlaunch.tns\n"
+             "       buildtnco -cxf dummy.tns           firstloader_cx.tns    ../CX/nlaunch.tc[o/c]\n");
         exit(1);
     }
     
@@ -114,14 +114,14 @@ int main(int argc, char * argv[]) {
     
     preloader = fopen(argv[3], "rb");
     if (!preloader) {
-        fclose(input);
+        if (input) { fclose(input); }
         perror(argv[3]);
         exit(1);
     }
 
     output = fopen(argv[4], "w+b");
     if (!output) {
-        fclose(input);
+        if (input) { fclose(input); }
         fclose(preloader);
         perror(argv[4]);
         exit(1);
@@ -186,9 +186,7 @@ int main(int argc, char * argv[]) {
     fprintf(output, "%8ld", fileend);
 
     
-    if (mode != 2) {
-        fclose(input);
-    }
+    if (input) { fclose(input); }
     fclose(preloader);
     fclose(output);
     if( (mode==1 || mode==2) && fileend<0x1000 ) {

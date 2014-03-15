@@ -2,8 +2,8 @@
  * nLaunchy
  *
  * Copyright (C) 2012-2013 nLaunch team
- * Copyright (C) 2013 nLaunch CX guy
- * Copyright (C) 2013 Excale
+ * Copyright (C) 2013      nLaunch CX guy
+ * Copyright (C) 2013-2014 Excale
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2, as
@@ -40,6 +40,7 @@ void main(void) {
     *(volatile unsigned*)0x90060C00 = 0x1ACCE551;
     *(volatile unsigned*)0x90060008 = 0;
     *(volatile unsigned*)0x90060C00 = 0;
+    
     #if MODEL==0
     put_byte(0x1181FD6B, 0xEA);
     #endif
@@ -47,6 +48,5 @@ void main(void) {
     mkdir("/phoenix/install/");
     rename(nlaunchupdatefilename, NLAUNCHPATH);
     DISPLAY(Z);
-    hw_reset();
-    __builtin_unreachable();
+    RESET();
 }
