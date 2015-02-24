@@ -1,9 +1,9 @@
 /*
- * nLaunchy v2.4
+ * nLaunchy v2.5
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013      nLaunch CX guy
- * Copyright (C) 2013-2014 Excale
+ * Copyright (C) 2013-2015 Excale
  * Copyright (C) 2013      Lionel Debroux
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,12 +25,12 @@
 // ================================================================================================
 // Variables
 // ================================================================================================
-static uint8_t    do_install_resources = 0;
 static const char osfilename[] =            "/phoenix/install/phoenix.tns";
 static const char nlaunchupdatefilename[] = "/documents/nlaunch/nlaunch.tns";
-static const char osupdatefilename[] =      "/documents/nlaunch/phoenix.tns";
 #if MULTIOS
 static       char osmultiupdatefilename[] = "/documents/nlaunch/phoenix_0.tns";
+#else
+static const char osupdatefilename[] =      "/documents/nlaunch/phoenix.tns";
 #endif
 static const char osoldfilename[] =         "/documents/nlaunch/phoenix.old.tns";
 static const char linuxloaderfilename[] =   "/documents/linux/linuxloader.tns";
@@ -71,6 +71,33 @@ static __attribute__((always_inline)) void launch_download_mode(void) {
     RESET();
 }
 
+//! Install the OS's resources.
+static __attribute__((always_inline)) void install_resources(void) {
+    FILE * osfile;
+    FILE * nlaunchfile;
+    if ( (nlaunchfile = fopen(NLAUNCHPATH, "r")) && (osfile = fopen(osfilename, "r")) ) {
+        purge_dir("/phoenix", 0);
+        purge_dir("/ti84"   , 0);
+        fclose(osfile);
+        fclose(nlaunchfile);
+    } else {
+        DISPLAY(C);
+    }
+
+    strcpy(NLAUNCHPATH, osfilename);
+    rename(NLAUNCHPATH, TEMPPATH);
+    put_byte(M(0x1192C220,0x11ABBA54), 0x09);
+    __asm volatile(
+        "LDR    R0, =" M("0x11952E6C","0x118D940C") "\n"
+        "LDR    R1, =" M("0x1192C2C8","0x11AB9730") "\n"
+        "LDR    R9, =" M("0x11952E6C","0x118D940C") "\n"
+        "MOV    LR, PC                               \n"
+        "LDR    PC, =" M("0x1192C120","0x11ABB96C") "\n"
+    );
+    rename(TEMPPATH, NLAUNCHPATH);
+    RESET();
+}
+
 //! Update the OS if needed.
 static __attribute__((always_inline)) void update_OS(void) {
     uint8_t keypad = *(volatile uint16_t*)0x900E001C;
@@ -81,55 +108,49 @@ static __attribute__((always_inline)) void update_OS(void) {
     }
 
     FILE * osfile;
+    #if MULTIOS
+    keypad = (M(~,)(*(volatile uint16_t*)0x900E0012));
+    if (keypad) {
+        uint32_t version = 0;
+        uint32_t offset  = sizeof(osmultiupdatefilename)-0x6;
+        while (!(keypad & 0x80)) {
+            keypad <<= 1;
+            version++;
+        }
+        osmultiupdatefilename[offset] += version;
+        if ((osfile = fopen(osmultiupdatefilename, "r"))) {
+            fclose(osfile);
+            osmultiupdatefilename[offset] -= version;
+            while ((osfile = fopen(osmultiupdatefilename, "r"))) {
+                fclose(osfile);
+                osmultiupdatefilename[offset]++;
+            }
+            rename(osfilename, osmultiupdatefilename);
+            osmultiupdatefilename[offset] = '0' + version;
+            rename(osmultiupdatefilename, osfilename);
+            DISPLAY(3);
+            install_resources();
+        }
+    }
+    #else
     if ((osfile = fopen(osupdatefilename, "r"))) {
         fclose(osfile);
         if ((osfile = fopen(osfilename, "r"))) {
-        fclose(osfile);
+            fclose(osfile);
             if (rename(osfilename, osoldfilename)) {
                 DISPLAY(K);
                 return;
             }
         }
         rename(osupdatefilename, osfilename);
-        do_install_resources = 1;
+        DISPLAY(3);
+        install_resources();
     }
-}
-
-//! Install the OS's resources.
-static __attribute__((always_inline)) void install_resources(void) {
-    if (do_install_resources) {
-        FILE * osfile;
-        FILE * nlaunchfile;
-        if ( (nlaunchfile = fopen(NLAUNCHPATH, "r")) && (osfile = fopen(osfilename, "r")) ) {
-            purge_dir("/phoenix", 0);
-            purge_dir("/ti84"   , 0);
-            fclose(osfile);
-            fclose(nlaunchfile);
-        } else {
-            DISPLAY(C);
-        }
-
-        strcpy(NLAUNCHPATH, osfilename);
-        rename(NLAUNCHPATH, TEMPPATH);
-        //DISPLAY(X);
-        put_byte(M(0x1192C220,0x11ABBA54), 0x09);
-        __asm volatile(
-            "LDR    R0, =" M("0x11952E6C","0x118D940C") "\n"
-            "LDR    R1, =" M("0x1192C2C8","0x11AB9730") "\n"
-            "LDR    R9, =" M("0x11952E6C","0x118D940C") "\n"
-            "MOV    LR, PC                               \n"
-            "LDR    PC, =" M("0x1192C120","0x11ABB96C") "\n"
-        );
-        //DISPLAY(Y);
-        rename(TEMPPATH, NLAUNCHPATH);
-        //DISPLAY(Z);
-        RESET();
-    }
+    #endif
 }
 
 //! Load the OS.
 static __attribute__((always_inline)) void load_OS(void) {
-
     uint16_t keypad = *(volatile uint16_t*)0x900E001C;
     keypad &= (1<<9);
     strcpy(NLAUNCHPATH, ((!keypad) ^ MODEL) ? linuxloaderfilename : osfilename);
@@ -185,15 +206,13 @@ static __attribute__((always_inline, noreturn)) void launch_OS(void) {
     __builtin_unreachable();
 }
 
-int main(void) {
+void __attribute__((section(".start"))) nlaunch(void) {
 
         DISPLAY(1);
     update_nlaunch();
         DISPLAY(2);
     update_OS();
-        DISPLAY(3);
-    install_resources();
-        DISPLAY(4);
+        DISPLAY(34);
     load_OS();
         DISPLAY(5);
     purge_logs();

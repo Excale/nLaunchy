@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013      nLaunch CX guy
- * Copyright (C) 2013-2014 Excale
+ * Copyright (C) 2013-2015 Excale
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2, as
@@ -30,7 +30,7 @@ static __attribute__((always_inline)) void put_byte(uint32_t absaddr, uint8_t sh
 void main(void) {
     static const char nlaunchupdatefilename[] = "/documents/nlaunch/nlaunch.tns";
     #if MODEL==1
-    asm volatile(
+    __asm volatile(
         "LDR    R0, =0x119004F8       \n"
         "LDR    R1, =0x13E00C1E       \n"
         "STR    R1, [R0]              \n"
@@ -38,7 +38,7 @@ void main(void) {
         "LDR    PC, =0x13ECFA70       \n"
     );
     #endif
-    
+
     unsigned dummy;
     __asm volatile(
         " .arm \n"
@@ -50,7 +50,7 @@ void main(void) {
     *(volatile unsigned*)0x90060C00 = 0x1ACCE551;
     *(volatile unsigned*)0x90060008 = 0;
     *(volatile unsigned*)0x90060C00 = 0;
-    
+
     DISPLAY(P);
     #if MODEL==0
     put_byte(0x1181FD6B, 0xEA);

@@ -1,8 +1,7 @@
 SECTIONS
 {
     . = 0x0;
-    .text : { *(.text.startup); }
-    .text : { *(.text); }
+    .text : { *(.start) *(.text); }
     .data : { *(.data); *(.rodata); *(.bss) }
     /* Discard the GOT - we're not using any relocations that need a GOT and the corresponding relocation code */
     /*.got : {}

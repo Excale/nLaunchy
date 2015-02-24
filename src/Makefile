@@ -1,51 +1,59 @@
 HOST_GCC = gcc
-GCC = nspire-gcc
-LD  = nspire-ld
-GCCFLAGS = -Os -g3 -nostdlib -Wall -W -Wno-attributes -marm -mcpu=arm926ej-s -s -fPIE -ffreestanding -std=gnu1x
-LDFLAGS  = -nostdlib -ffreestanding --no-startup --no-ldscript -T ldscript 
-OBJCOPY := "$(shell which arm-elf-objcopy 2>/dev/null)"
-ifeq (${OBJCOPY},"")
-	OBJCOPY := arm-none-eabi-objcopy
-endif
+GCC = arm-none-eabi-gcc
+LD  = arm-none-eabi-ld
+GCCFLAGS = -Os -Wall -Wextra -Werror -Wno-attributes -marm -mcpu=arm926ej-s -s -fPIE -ffreestanding -std=gnu1x
+LDFLAGS  = -nostdlib -nostartfiles -e nlaunch -PIE -T ldscript
+OBJCOPY  = arm-none-eabi-objcopy
 TNCN = nlaunch_classic.tns
 TNCP = preloader_classic.tns
 TNXN = nlaunch_cx.tns
 TNXP = preloader_cx.tns
 TNXF = firstloader_cx.tns
-FILES     = nlaunch.c patch.c patch_common.c patch_other.c ndless.c
+CFILES    = nlaunch.c patch.c patch_other.c ndless.c
+HFILES    = nlaunch.h boot2.h
 BUILDTNCO = buildtnco.exe
 BUILDIMG  = buildimg.exe
-DISTDIR   = ../src
-vpath %.tns $(DISTDIR)
 
 all: classic cx
 
-classic: $(TNCP) $(TNCN) $(BUILDTNCO)
-	./$(BUILDTNCO) -clr $(TNCN) $(TNCP) ../CLASSIC/nlaunch.tnc
-	./$(BUILDTNCO) -clr $(TNCN) $(TNCP) ../CLASSIC/nlaunch.tno
-	./$(BUILDTNCO) -clr $(TNCN) $(TNCP) ../CLASSIC/nlaunch.tns
+classic: ../CLASSIC/nlaunch.tnc ../CLASSIC/nlaunch.tno ../CLASSIC/nlaunch.tns
 
-cx:      $(TNXF) $(TNXP) $(TNXN) $(BUILDTNCO)
-	./$(BUILDTNCO) -cxf $(TNXF) $(TNXF) ../CX/nlaunch.tcc
-	./$(BUILDTNCO) -cxf $(TNXF) $(TNXF) ../CX/nlaunch.tco
-	./$(BUILDTNCO) -cxr $(TNXN) $(TNXP) ../CX/nlaunch.tns
+cx: ../CX/nlaunch.tcc ../CX/nlaunch.tco ../CX/nlaunch.tns
+
+../CLASSIC/nlaunch.tnc: $(TNCN) $(TNCP) $(BUILDTNCO)
+	./$(BUILDTNCO) -clr $(TNCN) $(TNCP) $@
+
+../CLASSIC/nlaunch.tno: $(TNCN) $(TNCP) $(BUILDTNCO)
+	./$(BUILDTNCO) -clr $(TNCN) $(TNCP) $@
+
+../CLASSIC/nlaunch.tns: $(TNCN) $(TNCP) $(BUILDTNCO)
+	./$(BUILDTNCO) -clr $(TNCN) $(TNCP) $@
+
+../CX/nlaunch.tcc: $(TNXF) $(BUILDTNCO)
+	./$(BUILDTNCO) -cxf $(TNXF) $(TNXF) $@
+
+../CX/nlaunch.tco: $(TNXF) $(BUILDTNCO)
+	./$(BUILDTNCO) -cxf $(TNXF) $(TNXF) $@
+
+../CX/nlaunch.tns: $(TNXN) $(TNXP) $(BUILDTNCO)
+	./$(BUILDTNCO) -cxr $(TNXN) $(TNXP) $@
 
 buildimg: $(BUILDIMG)
 
-nlaunch_classic.o: $(FILES)
-	$(GCC) $(GCCFLAGS) -o nlaunch_classic.o    -c "-DMODEL=0" $<
+nlaunch_classic.o: $(CFILES) $(HFILES)
+	$(GCC) $(GCCFLAGS) -o $@ -c "-DMODEL=0" $<
 
-preloader_classic.o: preloader.c
-	$(GCC) $(GCCFLAGS) -o preloader_classic.o  -c "-DMODEL=0" $<
+preloader_classic.o: preloader.c $(HFILES)
+	$(GCC) $(GCCFLAGS) -o $@ -c "-DMODEL=0" $<
 
-nlaunch_cx.o: $(FILES)
-	$(GCC) $(GCCFLAGS) -o nlaunch_cx.o         -c "-DMODEL=1" $<
+nlaunch_cx.o: $(CFILES) $(HFILES)
+	$(GCC) $(GCCFLAGS) -o $@ -c "-DMODEL=1" $<
 
-preloader_cx.o: preloader.c
-	$(GCC) $(GCCFLAGS) -o preloader_cx.o       -c "-DMODEL=1" $<
+preloader_cx.o: preloader.c $(HFILES)
+	$(GCC) $(GCCFLAGS) -o $@ -c "-DMODEL=1" $<
 
-firstloader_cx.o: firstloader.c
-	$(GCC) $(GCCFLAGS) -o firstloader_cx.o     -c "-DMODEL=1" $<
+firstloader_cx.o: firstloader.c $(HFILES)
+	$(GCC) $(GCCFLAGS) -o $@ -c "-DMODEL=1" $<
 
 $(TNCN): nlaunch_classic.o
 	$(LD) $(LDFLAGS) $^ -o $(@:.tns=.elf)

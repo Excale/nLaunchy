@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013      nLaunch CX guy
- * Copyright (C) 2013-2014 Excale
+ * Copyright (C) 2013-2015 Excale
  * Copyright (C) 2013      Lionel Debroux
  *
  * This program is free software; you can redistribute it and/or modify
@@ -121,6 +121,27 @@ static __attribute__((always_inline)) void patch_NCAS_3_6_0_546_extra(void) {
     put_word(0x10135DF4, 0xE12FFF1E);
 }
 
+static __attribute__((always_inline)) void patch_CAS_3_9_0_46x_extra(void) {
+    #if NDLESS
+    write_ndless3x_loader(1, 2);
+    #else
+    put_word(0x100BE598, 0xE12FFF1E);
+    #endif
+    put_byte(0x1008817B, 0xEA);
+    put_word(0x10111584, NOP);
+    put_word(0x1013C894, 0xE12FFF1E);
+}
+static __attribute__((always_inline)) void patch_NCAS_3_9_0_46x_extra(void) {
+    #if NDLESS
+    write_ndless3x_loader(0, 2);
+    #else
+    put_word(0x100BE7D0, 0xE12FFF1E);
+    #endif
+    put_byte(0x1008870B, 0xEA);
+    put_word(0x10111788, NOP);
+    put_word(0x1013C764, 0xE12FFF1E);
+}
+
 #elif MODEL==1
 
 static __attribute__((always_inline)) void patch_CXCAS_3_0_1_1753_extra(void)  {
@@ -146,13 +167,13 @@ static __attribute__((always_inline)) void patch_CXNCAS_3_0_2_1793_extra(void) {
 
 static __attribute__((always_inline)) void patch_CXCAS_3_1_0_392_extra(void)   {
     #if NDLESS
-    write_ndless3x_loader(3,0);
+    write_ndless3x_loader(1,0);
     #endif
     put_word(0x100B1108, 0xEAFFFFFE);
 }
 static __attribute__((always_inline)) void patch_CXNCAS_3_1_0_392_extra(void)  {
     #if NDLESS
-    write_ndless3x_loader(2,0);
+    write_ndless3x_loader(0,0);
     #endif
     put_word(0x100B0E24, 0xEAFFFFFE);
 }
@@ -217,7 +238,7 @@ static __attribute__((always_inline)) void patch_CXCAS_3_3_0_538_extra(void)  {
 
 static __attribute__((always_inline)) void patch_CXCAS_3_6_0_546_extra(void)  {
     #if NDLESS
-    write_ndless3x_loader(3, 1);
+    write_ndless3x_loader(1, 1);
     #else
     put_word(0x100BE1BC, 0xE12FFF1E);
     #endif
@@ -226,12 +247,44 @@ static __attribute__((always_inline)) void patch_CXCAS_3_6_0_546_extra(void)  {
 }
 static __attribute__((always_inline)) void patch_CXNCAS_3_6_0_546_extra(void) {
     #if NDLESS
-    write_ndless3x_loader(2, 1);
+    write_ndless3x_loader(0, 1);
     #else
     put_word(0x100BDED4, 0xE12FFF1E);
     #endif
     put_byte(0x1008D81B, 0xEA);
     put_word(0x10135838, 0xE12FFF1E);
+}
+
+static __attribute__((always_inline)) void patch_CXCAS_3_9_0_46x_extra(void)  {
+    put_word(0x100BDBDC, 0xE12FFF1E);
+    put_byte(0x100877BF, 0xEA);
+    put_word(0x1013C2F4, 0xE12FFF1E);
+}
+static __attribute__((always_inline)) void patch_CXNCAS_3_9_0_46x_extra(void) {
+    put_word(0x100BDDE4, 0xE12FFF1E);
+    put_byte(0x10087D1F, 0xEA);
+    put_word(0x1013C19C, 0xE12FFF1E);
+}
+
+static __attribute__((always_inline)) void patch_CXCAS_3_9_1_38_extra(void)  {
+    #if NDLESS
+    write_ndless3x_loader(1, 2);
+    #else
+    put_word(0x100BD88C, 0xE12FFF1E);
+    #endif
+    put_byte(0x1008746F, 0xEA);
+    put_word(0x10111778, NOP);
+    put_word(0x1013BB08, 0xE12FFF1E);
+}
+static __attribute__((always_inline)) void patch_CXNCAS_3_9_1_38_extra(void) {
+    #if NDLESS
+    write_ndless3x_loader(0, 2);
+    #else
+    put_word(0x100BDA94, 0xE12FFF1E);
+    #endif
+    put_byte(0x100879CF, 0xEA);
+    put_word(0x1011194C, NOP);
+    put_word(0x1013B9B0, 0xE12FFF1E);
 }
 
 

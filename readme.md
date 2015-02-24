@@ -1,4 +1,4 @@
-nLaunchy v2.4
+nLaunchy v2.5
 =============
 PLEASE READ THE WHOLE README BEFORE DOING ANYTHING.
 
@@ -11,6 +11,7 @@ user-accessible part of the filesystem - especially Linux :-) (see
 http://tiplanet.org/nspire-linux-builds/ for more information )
 
 As usual, use at your own risk :-P
+
 
 Initial installation
 ====================
@@ -52,9 +53,6 @@ Needless to say, all steps are important ;-)
    - /!\ first boot can be fairly long (max 3 min); the progression bar can be
      quite unstable. If the bar did not move at all during 3 minutes, consider
      the boot as a failure
-   - NOTE: unplugging the USB cable "at the right time", i.e. after sending
-     the TNO/TNC and shortly after the bar has reached 60% again, may increase
-     the reliability of the installation procedure
 
 10) enjoy :-)
 
@@ -64,18 +62,16 @@ Needless to say, all steps are important ;-)
 0) backup all your documents from your Nspire on your computer
 
 1) install the 3.1.0.16 boot2, usually known as "3.1".
-   If you currently have OS 3.1.0.392, 3.2.0.1212, 3.2.0.1219 or 3.2.3.1233 you
-   probably already have it. If you have installed any newer version without
-   TNOC-ing it, you probably will not be able to easily install the 3.1.0.16
-   boot2.
-   Otherwise, install OS 3.1.0.392:
-   CX CAS: http://ti-pla.net/a3718
-   CX    : http://ti-pla.net/a3717
+   If your current OS is older than 3.1, install OS 3.1.0.392.
+   If your current OS is between 3.1 and 3.2.3, you probably already have it.
+   If your current OS is between 3.3 and 3.9, install OS 3.9 and use
+   DowngradeFix 3.9 ( http://ti-pla.net/a105677 ).
+   If you have installed any newer version without TNOC-ing it, you will
+   probably not be able to easily install the 3.1.0.16 boot2
 
 2) get a compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
    - NOTE: Not all TI-OSes are compatible with nLaunchy (but many are).
-     OSes 3.1.0.392, 3.2.0.1219, 3.2.0.1233 and 3.6.0.546 are.
      For a full list of compatible OSes, check src/patch.c
 
 3) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
@@ -104,9 +100,6 @@ Needless to say, all steps are important ;-)
    - /!\ getting to the OS the first time can be fairly long (max 3 min); the
      progression bar can be quite unstable. If the bar did not move at all
      during 3 minutes, consider the boot as a failure
-   - NOTE: unplugging the USB cable "at the right time", i.e. after sending
-     the TCO/TCC and shortly after the bar has reached 60% again, may increase
-     the reliability of the installation procedure.
 
 10) enjoy :-)
    - /!\ when rebooting, the progress bar can sometimes be stuck a 60% with
@@ -154,6 +147,7 @@ Uninstallation
 
 4) reboot, transfer the OS to your calculator
 
+
 Additional features
 ===================
 The following keys should be pressed at boot time before PP gets printed
@@ -165,6 +159,13 @@ and released once 3 gets printed on the screen
   /documents/linux/linuxloader.tns
 * If it is working fine and you want nLaunchy to be more stealthy when booting,
   you can compile a quiet version ("DEBUG 1" in nlaunch.h)
+* If compiled with OVERCLOCK=1:
+  Will overclock your Nspire under some OSes
+* If compiled with MULTIOS=1:
+  Pressing the n-th key (counting from 0) of the following list:
+  Clickpad: 1U2V3W+, Touchpad/CX: 1STU3VWX will, if the file exists, install
+  /documents/nlaunch/phoenix_n.tns and move the current OS in the first
+  available spot
 
 
 Troubleshooting
@@ -173,6 +174,7 @@ If you see any letter on the screen (except PP), see the Debug strings section
 
 CX: if the reset button doesn't work, use a screwdriver to open the battery
 door and remove the battery before plugging it back in
+
 
 Debug strings
 =============
@@ -187,9 +189,7 @@ Signification of a few debug strings:
 Using Ndless with nLaunch
 =========================
 * Ndless 1.7/2.0 should work out of the box
-* Ndless 3.1: place the regular Ndless 3.1 ndless_resources.tns file in
-  /documents/ndless/, then reboot (make sure the revision is r800 or more)
-* Ndless 3.6: place the regular Ndless 3.6 ndless_resources_3.6.tns file in
+* Ndless 3.x: place the regular ndless_resources.tns file in
   /documents/ndless/, then reboot
 
 
@@ -197,9 +197,8 @@ License
 =======
 * Copyright (C) 2012-2013 nLaunch team
 * Copyright (C) 2013      nLaunch CX guy
-* Copyright (C) 2013-2014 Excale
-* Copyright (C) 2013      Lionel Debroux
-
+* Copyright (C) 2013-2015 Excale
+* Copyright (C) 2013-2015 Lionel Debroux
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 2, as
@@ -221,6 +220,7 @@ See https://github.com/Excale/nLaunchy
 
 Changelog
 =========
+* 2015-02-24: v2.5: Release 2.5 (Ndless 3.9 support)
 * 2014-03-15: v2.4: Release 2.4 (Ndless 3.6 support)
 * 2013-10-25: v2.3: Release 2.3 
 * 2013-08-28: v2.2: Release 2.2 
@@ -228,6 +228,7 @@ Changelog
                     feature
 * 2013-04-01: v2.0: CX support, by "nLaunch CX guy"
 * 2013-01-01: v1.0: First public version, by "nLaunch team"
+
 
 Greetings
 =========

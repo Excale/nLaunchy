@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2012-2013 nLaunch team
  * Copyright (C) 2013      nLaunch CX guy
- * Copyright (C) 2013-2014 Excale
+ * Copyright (C) 2013-2015 Excale
  * Copyright (C) 2013      Legimet
  *
  * This program is free software; you can redistribute it and/or modify
@@ -32,12 +32,12 @@ static const unsigned char part1[] = {
 
 static const unsigned char part2[] = {
     0x50, 0x4B, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x4E, 0x4C 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x4E, 0x4C
 };
 
 static const unsigned char part3[] = {
     0x50, 0x4B, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 static const unsigned char part4[] = {
@@ -88,7 +88,7 @@ int main(int argc, char * argv[]) {
              "       buildtnco -cxf dummy.tns           firstloader_cx.tns    ../CX/nlaunch.tc[o/c]\n");
         exit(1);
     }
-    
+
     if (!strcmp(argv[1], "-clr")) {
         mode = 0;
     }
@@ -111,7 +111,7 @@ int main(int argc, char * argv[]) {
             exit(1);
         }
     }
-    
+
     preloader = fopen(argv[3], "rb");
     if (!preloader) {
         if (input) { fclose(input); }
@@ -130,12 +130,12 @@ int main(int argc, char * argv[]) {
 
     fwrite(part1, sizeof(part1[0]), sizeof(part1)/sizeof(part1[0]), output);
     filestart = ftell(output);
-    
+
     if( mode!=2 )
     {
-    
+
         fwrite(part2, sizeof(part2[0]), sizeof(part2)/sizeof(part2[0]), output);
-        
+
         fseek(input, 0, SEEK_END);
         filesize = ftell(input);
         fseek(input, 0, SEEK_SET);
@@ -144,24 +144,24 @@ int main(int argc, char * argv[]) {
             int c = fgetc(input);
             fputc(c, output);
         }
-        
+
         filestart = ftell(output);
-        
+
         fseek(output, sizeof(part1) + 0x12, SEEK_SET);
         fputc(filesize & 0xFF, output);
         fputc(filesize >> 8  , output);
-    
+
     }
-    
-    
+
+
     fseek(output, filestart, SEEK_SET);
-    
+
     fwrite(part3, sizeof(part3[0]), sizeof(part3)/sizeof(part3[0]), output);
-    
+
     fseek(preloader, 0, SEEK_END);
     filesize = ftell(preloader);
     fseek(preloader, 0, SEEK_SET);
-    
+
     fwrite(part4, sizeof(part4[0]), sizeof(part4)/sizeof(part4[0]), output);
     fwrite(part5[mode], sizeof(part5[0][0]), sizeof(part5[0])/sizeof(part5[0][0]), output);
 
@@ -169,29 +169,25 @@ int main(int argc, char * argv[]) {
         int c = fgetc(preloader);
         fputc(c, output);
     }
-    
-    for (i = filesize; i < (mode==2? 0x1000: 0x400); i++) {
+
+    filesize = ftell(output);
+    for (i = filesize; i < 0x1000; i++) {
         fputc(0x00, output);
     }
-    
+
     fileend = ftell(output);
 
     fseek(output, filestart + 0x1A, SEEK_SET);
     filesize = fileend - filestart - sizeof(part3);
     fputc(filesize & 0xFF, output);
     fputc(filesize >> 8  , output);
-    
-    
+
+
     fseek(output, 0x17, SEEK_SET);
     fprintf(output, "%8ld", fileend);
 
-    
     if (input) { fclose(input); }
     fclose(preloader);
     fclose(output);
-    if( (mode==1 || mode==2) && fileend<0x1000 ) {
-        printf("File too small!");
-        return 1;
-    }
     return 0;
 }
