@@ -1,4 +1,4 @@
-nLaunchy v2.5
+nLaunchy v2.6
 =============
 PLEASE READ THE WHOLE README BEFORE DOING ANYTHING.
 
