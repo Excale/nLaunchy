@@ -262,7 +262,16 @@ static __attribute__((always_inline)) void patch_OS(void) {
             patch_CXCAS_3_9_1_38_extra();
             addr = 0x10A0AA0C;
         break;
+        case 0x1038C290:    // TI-NspireCX-4.0.3.29
+            patch_CXNCAS_4_0_3_29_extra();
+            addr = 0x109BE978;
+        break;
+        case 0x1038C7D0:    // TI-NspireCXCAS-4.0.3.29
+            patch_CXCAS_4_0_3_29_extra();
+            addr = 0x10A209E4;
+        break;
 
+#if 0
         case 0x102DBF20:    // TI-NspireCM-3.1.0.392
             patch_CMNCAS_3_1_0_392_extra();
             addr = 0x108002F8;
@@ -287,6 +296,7 @@ static __attribute__((always_inline)) void patch_OS(void) {
             patch_CMCAS_3_2_0_1219_extra();
             addr = 0x1093B2D0;
         break;
+#endif
 #endif
         default:
             // Unknown / unimplemented OS version, don't patch it !

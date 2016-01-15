@@ -21,7 +21,7 @@
 
 static void write_ndless3x_loader(uint32_t model, uint32_t os) {
     // model: 0=non-CAS ; 1=CAS
-    // os: 0=3.1.0.392 ; 1=3.6.0.546 ; 2=3.9.x
+    // os: 0=3.1.0.392 ; 1=3.6.0.546 ; 2=3.9.x ; 3=4.0.3.29
     #define OFFSET_MODEL 0x33
     #define OFFSET_OS    0x41
     static const uint32_t ndless3x_load_addr[][2] = {
@@ -29,10 +29,11 @@ static void write_ndless3x_loader(uint32_t model, uint32_t os) {
         {0x100A6A7C, 0x100A6D3C},
         {0x100BE8B4, 0x100BEB6C},
         {0x100BE7D0, 0x100BE598}
-        #elif MODEL ==1
+        #elif MODEL==1
         {0x100A6178, 0x100A6460},
         {0x100BDED4, 0x100BE1BC},
-        {0x100BDA94, 0x100BD88C}
+        {0x100BDA94, 0x100BD88C},
+        {0x100C235C, 0x100C2174}
         #endif
     };
     static uint32_t ndless3x_loader[] = {
@@ -69,7 +70,9 @@ static void write_ndless3x_loader(uint32_t model, uint32_t os) {
         {{0x103FC858, 0x10404950, 0x103F6DF0, 0x103FC9FC, 0x103FC0CC},
          {0x103FD2C8, 0x104053C0, 0x103F7860, 0x103FD46C, 0x103FCB3C}},
         {{0x1040440C, 0x1040C684, 0x103FEAD0, 0x104045B0, 0x10403C2C},
-         {0x1040496C, 0x1040CBE4, 0x103FF030, 0x10404B10, 0x1040418C}}
+         {0x1040496C, 0x1040CBE4, 0x103FF030, 0x10404B10, 0x1040418C}},
+        {{0x10413DE4, 0x1041C05C, 0x1040E4A8, 0x10413F88, 0x10413604},
+         {0x10414324, 0x1041C59C, 0x1040E9E8, 0x104144C8, 0x10413B44}}
         #endif
     };
 

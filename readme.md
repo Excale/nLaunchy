@@ -29,7 +29,7 @@ Needless to say, all steps are important ;-)
 2) get a compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
    - NOTE: Not all TI-OSes are compatible with nLaunchy (but many are).
-     OSes 3.1.0.392, 3.2.0.1219, 3.2.0.1233 and 3.6.0.546 are.
+     OSes 3.1.0.392, 3.6.0.546 and 3.9.0.46x are.
      For a full list of compatible OSes, check src/patch.c
 
 3) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
@@ -62,16 +62,17 @@ Needless to say, all steps are important ;-)
 0) backup all your documents from your Nspire on your computer
 
 1) install the 3.1.0.16 boot2, usually known as "3.1".
-   If your current OS is older than 3.1, install OS 3.1.0.392.
-   If your current OS is between 3.1 and 3.2.3, you probably already have it.
-   If your current OS is between 3.3 and 3.9, install OS 3.9 and use
-   DowngradeFix 3.9 ( http://ti-pla.net/a105677 ).
-   If you have installed any newer version without TNOC-ing it, you will
+   - If your current OS is older than 3.1, install OS 3.1.0.392.
+   - If your current OS is between 3.1 and 3.2.3, you probably already have it.
+   - If your current OS is between 3.3 and 4.0, install OS 4.0 and use
+   nsNandMgr ( http://ti-pla.net/a10080 ).
+   - If you have installed any newer version without TNOC-ing it, you will
    probably not be able to easily install the 3.1.0.16 boot2
 
 2) get a compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
    - NOTE: Not all TI-OSes are compatible with nLaunchy (but many are).
+     OSes 3.1.0.392, 3.6.0.546 and 4.0.3.29 are.
      For a full list of compatible OSes, check src/patch.c
 
 3) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
@@ -189,7 +190,7 @@ Signification of a few debug strings:
 Using Ndless with nLaunch
 =========================
 * Ndless 1.7/2.0 should work out of the box
-* Ndless 3.x: place the regular ndless_resources.tns file in
+* Ndless 3.x/4.x: place the regular ndless_resources.tns file in
   /documents/ndless/, then reboot
 
 
@@ -197,7 +198,7 @@ License
 =======
 * Copyright (C) 2012-2013 nLaunch team
 * Copyright (C) 2013      nLaunch CX guy
-* Copyright (C) 2013-2015 Excale
+* Copyright (C) 2013-2016 Excale
 * Copyright (C) 2013-2015 Lionel Debroux
 
 This program is free software; you can redistribute it and/or modify
@@ -220,6 +221,7 @@ See https://github.com/Excale/nLaunchy
 
 Changelog
 =========
+* 2016-01-15: v2.6: Release 2.6 (Ndless 4.0 support)
 * 2015-02-24: v2.5: Release 2.5 (Ndless 3.9 support)
 * 2014-03-15: v2.4: Release 2.4 (Ndless 3.6 support)
 * 2013-10-25: v2.3: Release 2.3 

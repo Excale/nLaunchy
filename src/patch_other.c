@@ -287,7 +287,28 @@ static __attribute__((always_inline)) void patch_CXNCAS_3_9_1_38_extra(void) {
     put_word(0x1013B9B0, 0xE12FFF1E);
 }
 
+static __attribute__((always_inline)) void patch_CXCAS_4_0_3_29_extra(void)  {
+    #if NDLESS
+    write_ndless3x_loader(1, 3);
+    #else
+    put_word(0x100C2174, 0xE12FFF1E);
+    #endif
+    put_byte(0x1008B74B, 0xEA);
+    put_word(0x10117F7C, NOP);
+    put_word(0x10147F50, 0xE12FFF1E);
+}
+static __attribute__((always_inline)) void patch_CXNCAS_4_0_3_29_extra(void) {
+    #if NDLESS
+    write_ndless3x_loader(0, 3);
+    #else
+    put_word(0x100C235C, 0xE12FFF1E);
+    #endif
+    put_byte(0x1008BC8F, 0xEA);
+    put_word(0x1011812C, NOP);
+    put_word(0x10147DD0, 0xE12FFF1E);
+}
 
+#if 0
 static __attribute__((always_inline)) void patch_CMCAS_3_1_0_392_extra(void)   {
     put_byte(0x10076913, 0xEA);
 }
@@ -320,5 +341,6 @@ static __attribute__((always_inline)) void patch_CMNCAS_3_2_0_1219_extra(void) {
     #endif
     put_byte(0x1008022F, 0xEA);
 }
+#endif
 
 #endif
