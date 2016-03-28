@@ -46,7 +46,7 @@ Needless to say, all steps are important ;-)
    the root of the user-accessible part of the file-system
 
 8) reboot, go to the maintenance menu ( http://ti-pla.net/t5360 ), delete OS
-   (option 2)
+   (option 2 (you might have to press `t` on a touchpad calculator))
 
 9) reboot, transfer nlaunch.tno/tnc to your calculator (an error will certainly
    be shown on the computer, check if it is ok on your calculator)
