@@ -1,4 +1,4 @@
-nLaunchy v2.6
+nLaunchy v2.7
 =============
 PLEASE READ THE WHOLE README BEFORE DOING ANYTHING.
 
@@ -64,7 +64,7 @@ Needless to say, all steps are important ;-)
 1) install the 3.1.0.16 boot2, usually known as "3.1".
    - If your current OS is older than 3.1, install OS 3.1.0.392.
    - If your current OS is between 3.1 and 3.2.3, you probably already have it.
-   - If your current OS is between 3.3 and 4.0, install OS 4.0 and use
+   - If your current OS is between 3.3 and 4.2, install OS 4.2 and use
    nsNandMgr ( http://ti-pla.net/a10080 ).
    - If you have installed any newer version without TNOC-ing it, you will
    probably not be able to easily install the 3.1.0.16 boot2
@@ -72,7 +72,7 @@ Needless to say, all steps are important ;-)
 2) get a compatible OS. See
    http://tiplanet.org/forum/archives_list.php?id=OS+Nspire
    - NOTE: Not all TI-OSes are compatible with nLaunchy (but many are).
-     OSes 3.1.0.392, 3.6.0.546 and 4.0.3.29 are.
+     OSes 3.1.0.392, 3.6.0.546, 4.0.3.29 and 4.2.0.532 are.
      For a full list of compatible OSes, check src/patch.c
 
 3) use TNOC ( http://ti-pla.net/a1922 ) on the OS upgrade to remove the boot2
@@ -221,6 +221,7 @@ See https://github.com/Excale/nLaunchy
 
 Changelog
 =========
+* 2016-04-10: v2.7: Release 2.7 (Ndless 4.2 support)
 * 2016-01-15: v2.6: Release 2.6 (Ndless 4.0 support)
 * 2015-02-24: v2.5: Release 2.5 (Ndless 3.9 support)
 * 2014-03-15: v2.4: Release 2.4 (Ndless 3.6 support)

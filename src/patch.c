@@ -270,6 +270,14 @@ static __attribute__((always_inline)) void patch_OS(void) {
             patch_CXCAS_4_0_3_29_extra();
             addr = 0x10A209E4;
         break;
+        case 0x1039C7A0:    // TI-NspireCX-4.2.0.532
+            patch_CXNCAS_4_2_0_532_extra();
+            addr = 0x10A09CBC;
+        break;
+        case 0x1039CD20:    // TI-NspireCXCAS-4.2.0.532
+            patch_CXCAS_4_2_0_532_extra();
+            addr = 0x10A6D20C;
+        break;
 
 #if 0
         case 0x102DBF20:    // TI-NspireCM-3.1.0.392
