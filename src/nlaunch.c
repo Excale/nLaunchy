@@ -93,6 +93,7 @@ static __attribute__((always_inline)) void install_resources(void) {
         "LDR    R9, =" M("0x11952E6C","0x118D940C") "\n"
         "MOV    LR, PC                               \n"
         "LDR    PC, =" M("0x1192C120","0x11ABB96C") "\n"
+        :::"r0","r1","r9","lr"
     );
     rename(TEMPPATH, NLAUNCHPATH);
     RESET();
