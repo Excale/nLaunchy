@@ -210,9 +210,10 @@ static __attribute__((always_inline, noreturn)) void launch_OS(void) {
 //! Display BootImage.tns
 static __attribute__((always_inline)) void display_bootlogo(void) {
 	FILE *logo;
-	logo = fopen((char *)osbootlogo, "rb");
-	fread(*(volatile unsigned*)0xC0000010,buffer_size,1,logo);
-	fclose(logo);
+	if ((logo = fopen((char *)osbootlogo, "rb"))); {
+	    fread(*(volatile unsigned*)0xC0000010,buffer_size,1,logo);
+	    fclose(logo);
+	}
 }
 
 void __attribute__((section(".start"))) nlaunch(void) {
