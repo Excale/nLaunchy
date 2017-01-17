@@ -167,6 +167,9 @@ and released once 3 gets printed on the screen
   Clickpad: 1U2V3W+, Touchpad/CX: 1STU3VWX will, if the file exists, install
   /documents/nlaunch/phoenix_n.tns and move the current OS in the first
   available spot
+* Adding a binary image named "bootlogo.tns" to the folder /nlaunch/ with 
+  a resolution of 320 * 240 (or smaller) will make that image display during 
+  boot 2.  (Imaging software http://ti-pla.net/a797887)
 
 
 Troubleshooting
